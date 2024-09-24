@@ -1,0 +1,14 @@
+{
+  "name": "iChat",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:rcapeto/ichat.git",
+  "author": "Raphael Capeto <raphaelcapeto@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "changeset-version": "yarn changeset version"
+  },
+  "dependencies": {
+    "@changesets/cli": "^2.27.7"
+  }
+}

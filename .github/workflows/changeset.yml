@@ -1,0 +1,46 @@
+name: Version or Publish
+
+on:
+  push:
+    branches:
+      - master
+      
+jobs:
+  changeset:
+    name: Changeset
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+
+        with:
+          node-version: 16
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Generate changeset
+        run: yarn changeset-version
+
+      - name: Atualizando github  
+        env: 
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          echo "Branch is ... ${BRANCH}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "chore: update changelog"
+          git push origin $BRANCH
+
+      - name: Criando Pull Request 
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: create pr
+          title: Update your branch
+          body: This pr is generate automatically
+          base: master
+          labels: automated-pr
+          branch: develop
