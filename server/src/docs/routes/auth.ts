@@ -97,7 +97,7 @@ const paths = {
               ok: true,
               data: {},
             },
-            contentSchemaPath: 'RequestResponse',
+            contentSchemaPath: 'RegisterResponse',
             description: 'Conta criada com sucesso',
           },
         ],
