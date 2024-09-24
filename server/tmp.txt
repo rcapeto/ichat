@@ -1,0 +1,2 @@
+
+[2024-09-24T14:58:54.269Z] - {{ ERROR }} - Cannot destructure property 'session' of '(intermediate value)' as it is undefined.

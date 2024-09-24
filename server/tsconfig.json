@@ -1,0 +1,16 @@
+{
+   "compilerOptions": {
+     "allowJs": true,
+     "module": "CommonJS",
+     "moduleResolution": "node",
+     "baseUrl": ".",
+     "paths": {
+       "~/*": ["./src/*"]
+     },
+     "esModuleInterop": true,
+     "removeComments": true,
+     "outDir": "./dist",
+     "noImplicitAny": true,
+     "resolveJsonModule": true
+   }
+ }

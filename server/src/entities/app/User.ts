@@ -1,0 +1,57 @@
+import { User as DBUser } from '@prisma/client'
+import { PasswordService } from '~/services/password'
+import { omit } from '~/utils/omit'
+import { Chat } from './Chat'
+
+export type User = {
+  firstName: string
+  password: string
+  lastName: string
+  email: string
+  profileImage: string | null
+  createdAt: string
+  id: string
+  myChats: Chat[]
+  invitedChats: Chat[]
+}
+
+export type UserSession = Omit<User, 'password'>
+
+type ChatsParams = {
+  myChats?: Chat[]
+  invitedChats?: Chat[]
+}
+
+export class UserEntity {
+  public firstName: string
+  public password: string
+  public lastName: string
+  public email: string
+  public profileImage: string | null
+  public createdAt: string
+  public id: string
+  public myChats: Chat[]
+  public invitedChats: Chat[]
+
+  constructor(data: DBUser, chatParams: ChatsParams = {}) {
+    this.firstName = data.first_name
+    this.lastName = data.last_name
+    this.password = data.password
+    this.email = data.email
+    this.profileImage = data.profile_image
+    this.id = data.id
+    this.myChats = chatParams.myChats
+    this.invitedChats = chatParams.invitedChats
+  }
+
+  getSession(): UserSession {
+    return omit(this, ['password'])
+  }
+
+  async isSamePassword(password: string) {
+    return await PasswordService.checkPassword({
+      encryptedPassword: this.password,
+      password,
+    })
+  }
+}
