@@ -2,7 +2,7 @@ const doc = '/api-docs'
 
 const auth = {
   login: '/auth/login',
-  session: '/auth/session',
+  register: '/auth/register',
 }
 
 const appRoutes = {

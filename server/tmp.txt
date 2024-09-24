@@ -1,2 +1,4 @@
 
 [2024-09-24T14:58:54.269Z] - {{ ERROR }} - Cannot destructure property 'session' of '(intermediate value)' as it is undefined.
+[2024-09-24T17:09:22.491Z] - {{ ERROR }} - Method not implemented.
+[2024-09-24T17:10:29.876Z] - {{ ERROR }} - Method not implemented.

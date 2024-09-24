@@ -22,7 +22,7 @@ export class LoginController implements BasicController {
       await this.logger.execute({
         action: loggerAction,
         type: APILoggerType.SUCCESS,
-        payload: data,
+        payload: JSON.stringify(data),
       })
 
       return response.status(Status.OK).json(dispatchResponse(data))
@@ -32,10 +32,10 @@ export class LoginController implements BasicController {
       await this.logger.execute({
         action: loggerAction,
         type: APILoggerType.ERROR,
-        payload: {
+        payload: JSON.stringify({
           ...request.body,
           error,
-        },
+        }),
       })
 
       return response.status(apiError.status).json(dispatchResponse(apiError))

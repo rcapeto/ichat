@@ -1,41 +1,41 @@
 import { Request, Response } from 'express'
 import { BasicController } from '~/app/controllers/base'
-import { SessionUseCase } from '~/app/use-cases/auth/session'
+import { RegisterUseCase } from '~/app/use-cases/auth/register'
 import { CreateLogUseCase } from '~/app/use-cases/logger/create'
 import { APILoggerType } from '~/enums/apiLoggerType'
 import { Status } from '~/enums/status'
 import { dispatchResponse } from '~/utils/dispatchResponse'
 import { getAPIError } from '~/utils/getApiError'
 
-const loggerAction = 'When someone try get current session'
+const loggerAction = 'When someone try to register'
 
-export class SessionController implements BasicController {
+export class RegisterController implements BasicController {
   constructor(
-    private useCase: SessionUseCase,
+    private useCase: RegisterUseCase,
     private logger?: CreateLogUseCase,
   ) {}
 
   async handler(request: Request, response: Response): Promise<unknown> {
     try {
-      const data = await this.useCase.execute(request.body)
+      await this.useCase.execute(request.body)
 
       await this.logger.execute({
         action: loggerAction,
         type: APILoggerType.SUCCESS,
-        payload: data,
+        payload: '',
       })
 
-      return response.status(Status.OK).json(dispatchResponse(data))
+      return response.status(Status.CREATED).json(dispatchResponse({}))
     } catch (error) {
       const apiError = getAPIError(error)
 
       await this.logger.execute({
         action: loggerAction,
         type: APILoggerType.ERROR,
-        payload: {
+        payload: JSON.stringify({
           ...request.body,
           error,
-        },
+        }),
       })
 
       return response.status(apiError.status).json(dispatchResponse(apiError))
