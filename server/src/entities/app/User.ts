@@ -15,7 +15,7 @@ export type User = {
   invitedChats: Chat[]
 }
 
-export type UserSession = Omit<User, 'password'>
+export type UserSession = Omit<User, 'password' | 'myChats' | 'invitedChats'>
 
 type ChatsParams = {
   myChats?: Chat[]
@@ -42,6 +42,7 @@ export class UserEntity {
     this.id = data.id
     this.myChats = chatParams.myChats
     this.invitedChats = chatParams.invitedChats
+    this.createdAt = data.created_at.toISOString()
   }
 
   getSession(): UserSession {

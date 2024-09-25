@@ -7,6 +7,9 @@ const auth = {
 
 const appRoutes = {
   logs: '/logs',
+  user: {
+    findMany: '/users',
+  },
 }
 
 export const endpoints = {

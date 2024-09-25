@@ -15,6 +15,7 @@ export const serverConfig = {
     totalPages: 'X-TOTAL-PAGES',
   },
   suffixNewPassword: '@new',
+  numberOfDataPerPage: 10,
   withLogger: true,
   defaultLang: Languages.PT,
 }

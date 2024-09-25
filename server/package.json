@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
+    "@faker-js/faker": "^9.0.2",
     "@rocketseat/eslint-config": "^2.1.0",
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
@@ -36,7 +37,8 @@
     "dev": "tsx watch --env-file=.env src/server.ts",
     "test": "jest",
     "lint": "eslint \"src/**/*.ts\" --no-error-on-unmatched-pattern",
-    "types:check": "tsc --noEmit --pretty"
+    "types:check": "tsc --noEmit --pretty",
+    "db:seed": "prisma db seed"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

@@ -4,6 +4,7 @@ import { serverConfig } from '~/config/server'
 import { APIErrorSchema } from '~/docs/components'
 
 import auth from '~/docs/routes/auth'
+import users from '~/docs/routes/users'
 
 const SERVER_PORT = serverConfig.PORT
 
@@ -23,11 +24,13 @@ export const swaggerConfig: JsonObject = {
   },
   paths: {
     ...auth.paths,
+    ...users.paths,
   },
   components: {
     schemas: {
       APIErrorSchema,
       ...auth.schemas,
+      ...users.schemas,
     },
   },
 }

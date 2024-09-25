@@ -30,3 +30,11 @@ export function dispatchNotFoundError(message: string) {
     status: Status.NOT_FOUND,
   })
 }
+
+export function dispatchUnauthorizedError(message: string) {
+  return dispatchError({
+    message,
+    errorType: ErrorType.UNAUTHORIZED,
+    status: Status.UNAUTHORIZED,
+  })
+}

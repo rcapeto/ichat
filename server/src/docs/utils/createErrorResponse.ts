@@ -1,16 +1,20 @@
 import { ApiSchemas } from '~/docs/types'
 import { ApiError } from '~/entities/apiError'
-import { Status } from '~/enums/status'
 import { Messages } from '~/messages'
-import { dispatchValidationError } from '~/utils/dispatchError'
+import {
+  dispatchRequiredAuthorizationError,
+  dispatchValidationError,
+} from '~/utils/dispatchError'
 
 export function createResponseValidationError() {
+  const error = dispatchValidationError(Messages.FIELDS_VALIDATION_ERROR)
+
   return {
     contentSchemaPath: ApiSchemas.ERROR,
-    code: Status.BAD_REQUEST,
+    code: error.status,
     content: {
       ok: false,
-      data: dispatchValidationError(Messages.FIELDS_VALIDATION_ERROR),
+      data: error,
     },
     description: 'Validação dos campos do request.body',
   }
@@ -25,5 +29,19 @@ export function createResponseError(error: ApiError, description: string) {
       data: error,
     },
     description,
+  }
+}
+
+export function createResponseNeedLoginError() {
+  const error = dispatchRequiredAuthorizationError()
+
+  return {
+    contentSchemaPath: ApiSchemas.ERROR,
+    code: error.status,
+    content: {
+      ok: false,
+      data: error,
+    },
+    description: 'O usuário precisa estar logado para realizar essa request',
   }
 }
