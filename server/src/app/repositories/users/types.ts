@@ -24,3 +24,11 @@ export type UpdateUserRequest = {
 export type UpdateUserResponse = {
   user: UserSession
 }
+
+export type UpdateUserPasswordRequest = {
+  newPassword: string
+  password: string
+  userId: string
+}
+
+export type UpdateUserPasswordResponse = void

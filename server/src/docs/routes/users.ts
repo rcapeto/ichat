@@ -1,6 +1,8 @@
 import {
   FindManyUserRequest,
   FindManyUserResponse,
+  UpdateUserPasswordRequest,
+  UpdateUserPasswordResponse,
   UpdateUserRequest,
   UpdateUserResponse,
 } from '~/app/repositories/users/types'
@@ -23,6 +25,10 @@ const findMany = createRoute<FindManyUserRequest, FindManyUserResponse>
 const update = createRoute<
   Omit<UpdateUserRequest, 'userId'>,
   UpdateUserResponse
+>
+const updatePassword = createRoute<
+  Omit<UpdateUserPasswordRequest, 'userId'>,
+  UpdateUserPasswordResponse
 >
 
 const tag = 'Users'
@@ -135,6 +141,56 @@ const paths = {
       },
     ],
   }),
+  [getCorrectEndpoint(userEndpoints.updatePassword)]: updatePassword({
+    routes: [
+      {
+        method: 'patch',
+        description: 'Atualizar a senha do usuário',
+        summary: 'Atualizar a senha',
+        tags: [tag],
+        isPrivate: true,
+        requestBody: {
+          schema: 'UpdateUserPasswordRequest',
+          example: {
+            password: 'user-password',
+            newPassword: 'new-user-password',
+          },
+        },
+        responses: [
+          createResponseNeedLoginError(),
+          createResponseError(
+            dispatchNotFoundError(Messages.DOES_NOT_FOUND_USER),
+            'Quando o usuário não é encontrado',
+          ),
+          createResponseError(
+            dispatchError({
+              errorType: ErrorType.ERROR,
+              message: Messages.CHANGE_PASSWORD_MUST_KNOW_OLD,
+              status: Status.BAD_REQUEST,
+            }),
+            'Quando o usuário digita a senha atual errada',
+          ),
+          createResponseError(
+            dispatchError({
+              errorType: ErrorType.ERROR,
+              message: Messages.CHANGE_PASSWORD_ERROR,
+              status: Status.BAD_REQUEST,
+            }),
+            'Quando o usuário digita a senha nova igual a atual',
+          ),
+          {
+            code: Status.OK,
+            content: {
+              ok: true,
+              data: {},
+            },
+            contentSchemaPath: 'UpdateUserPasswordResponse',
+            description: 'Senha atualizada com sucesso',
+          },
+        ],
+      },
+    ],
+  }),
 }
 
 const schemas: DocumentSchema = {
@@ -184,6 +240,17 @@ const schemas: DocumentSchema = {
       profileImage: { type: 'string' },
       id: { type: 'string' },
     },
+  },
+  UpdateUserPasswordRequest: {
+    type: 'object',
+    properties: {
+      password: { type: 'string' },
+      newPassword: { type: 'string' },
+    },
+  },
+  UpdateUserPasswordResponse: {
+    type: 'object',
+    properties: {},
   },
 }
 

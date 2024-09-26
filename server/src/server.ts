@@ -1,7 +1,8 @@
-import express from 'express'
-import dotenv from 'dotenv'
 import cors from 'cors'
+import dotenv from 'dotenv'
+import express from 'express'
 import path from 'node:path'
+// import { Server as SocketServer } from 'socket.io'
 
 import { serverConfig } from '~/config/server'
 import { routes } from '~/routes'
@@ -33,10 +34,20 @@ for (const route of routes) {
   server.use(`/${apiVersion}`, route)
 }
 
-server.listen(SERVER_PORT, () => {
+const origin = `http://localhost:${SERVER_PORT}`
+
+const httpServer = server.listen(SERVER_PORT, () => {
   console.log(`
    ================================================
-   Server is running in: http://localhost:${SERVER_PORT}
+   Server is running in: ${origin}
    ================================================
-         `)
+`)
 })
+
+// const io = new SocketServer(httpServer, {
+//   cors: {
+//     origin,
+//   },
+// })
+
+// io.on('connection', (socket) => {})

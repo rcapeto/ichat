@@ -5,6 +5,7 @@ import { endpoints } from '~/routes/endpoints'
 import { uploadUserImages } from '~/services/multer'
 import { findMany } from './findMany'
 import { update } from './update'
+import { updatePassword } from './updatePassword'
 
 const multerPath = multer(uploadUserImages)
 
@@ -17,4 +18,10 @@ userRoutes.put(
   ensureUserIsAuthenticated,
   multerPath.single('file'),
   update,
+)
+
+userRoutes.patch(
+  userEndpoints.updatePassword,
+  ensureUserIsAuthenticated,
+  updatePassword,
 )

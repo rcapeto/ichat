@@ -2,6 +2,8 @@ import { UserRepository } from '~/app/repositories/users'
 import {
   FindManyUserRequest,
   FindManyUserResponse,
+  UpdateUserPasswordRequest,
+  UpdateUserPasswordResponse,
   UpdateUserRequest,
   UpdateUserResponse,
 } from '~/app/repositories/users/types'
@@ -15,6 +17,40 @@ import { lowerCase } from '~/utils/strings'
 
 export class TestUserRepository implements UserRepository {
   private users: User[] = []
+
+  async updatePassword(
+    request: UpdateUserPasswordRequest,
+  ): Promise<UpdateUserPasswordResponse> {
+    const { newPassword, userId, password } = request
+    const user = await this.findUserById(userId)
+
+    const isSameUserPassword = user.password === password
+    const isSamePassword = user.password === newPassword
+
+    if (!isSameUserPassword) {
+      throw dispatchError({
+        errorType: ErrorType.ERROR,
+        message: Messages.CHANGE_PASSWORD_MUST_KNOW_OLD,
+        status: Status.BAD_REQUEST,
+      })
+    }
+
+    if (isSamePassword) {
+      throw dispatchError({
+        errorType: ErrorType.ERROR,
+        message: Messages.CHANGE_PASSWORD_ERROR,
+        status: Status.BAD_REQUEST,
+      })
+    }
+
+    const userIndex = this.users.findIndex((dbUser) => dbUser.id === user.id)
+
+    user.password = newPassword
+
+    if (userIndex !== -1) {
+      this.users.splice(userIndex, 0, user)
+    }
+  }
 
   async update(request: UpdateUserRequest): Promise<UpdateUserResponse> {
     const { userId, email, firstName, profileImage, lastName } = request

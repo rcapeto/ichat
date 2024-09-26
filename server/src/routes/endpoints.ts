@@ -10,6 +10,7 @@ const appRoutes = {
   user: {
     findMany: '/users',
     update: '/user',
+    updatePassword: '/user/password',
   },
 }
 

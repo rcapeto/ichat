@@ -2,6 +2,8 @@ import { UserRepository } from '~/app/repositories/users'
 import {
   FindManyUserRequest,
   FindManyUserResponse,
+  UpdateUserPasswordRequest,
+  UpdateUserPasswordResponse,
   UpdateUserRequest,
   UpdateUserResponse,
 } from '~/app/repositories/users/types'
@@ -11,10 +13,54 @@ import { UserEntity } from '~/entities/app/User'
 import { ErrorType } from '~/enums/errorType'
 import { Status } from '~/enums/status'
 import { Messages } from '~/messages'
+import { PasswordService } from '~/services/password'
 import { dispatchError, dispatchNotFoundError } from '~/utils/dispatchError'
 import { lowerCase } from '~/utils/strings'
 
 export class DatabaseUserRepository implements UserRepository {
+  async updatePassword(
+    request: UpdateUserPasswordRequest,
+  ): Promise<UpdateUserPasswordResponse> {
+    const { newPassword, userId, password } = request
+
+    const dbUser = await this.findUserById(userId)
+    const user = new UserEntity(dbUser)
+
+    const [isSamePassword, isSameUserPassword] = await Promise.all([
+      user.isSamePassword(newPassword),
+      user.isSamePassword(password),
+    ])
+
+    if (!isSameUserPassword) {
+      throw dispatchError({
+        errorType: ErrorType.ERROR,
+        message: Messages.CHANGE_PASSWORD_MUST_KNOW_OLD,
+        status: Status.BAD_REQUEST,
+      })
+    }
+
+    if (isSamePassword) {
+      throw dispatchError({
+        errorType: ErrorType.ERROR,
+        message: Messages.CHANGE_PASSWORD_ERROR,
+        status: Status.BAD_REQUEST,
+      })
+    }
+
+    const encryptedPassword = await PasswordService.encryptPassword({
+      password: newPassword,
+    })
+
+    await client.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        password: encryptedPassword,
+      },
+    })
+  }
+
   async update(request: UpdateUserRequest): Promise<UpdateUserResponse> {
     const { userId, email, firstName, profileImage, lastName } = request
 

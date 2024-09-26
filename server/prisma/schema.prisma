@@ -30,16 +30,19 @@ model Message {
   file_url   String?
   chat       Chat?    @relation(fields: [chat_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   chat_id    String?
+  read       Boolean? @default(false)
 }
 
 model Chat {
-  id         String    @id @unique @default(uuid())
-  created_at DateTime  @default(now())
-  messages   Message[]
-  owner      User      @relation("my_chats", fields: [owner_id], references: [id])
-  owner_id   String
-  contact    User      @relation("invited_chats", fields: [contact_id], references: [id])
-  contact_id String
+  id                   String    @id @unique @default(uuid())
+  created_at           DateTime  @default(now())
+  messages             Message[]
+  owner                User      @relation("my_chats", fields: [owner_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  owner_id             String
+  contact              User      @relation("invited_chats", fields: [contact_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  contact_id           String
+  owner_unread_count   Int
+  contact_unread_count Int
 }
 
 model Logger {

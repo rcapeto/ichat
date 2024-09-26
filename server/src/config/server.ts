@@ -7,7 +7,7 @@ export const serverConfig = {
   logFile: 'tmp.txt',
   uploadFolders: {
     users: env.UPLOADS_IMAGES_USER ?? 'upload_users_image',
-    message: env.UPLOADS_MESSAGES_ASSETS ?? 'upload_messages_image',
+    message: env.UPLOADS_MESSAGES_ASSETS ?? 'upload_messages_files',
   },
   tokenSecretKet: env.TOKEN_SECRET_KEY ?? 'top-secret',
   version: 'v1',

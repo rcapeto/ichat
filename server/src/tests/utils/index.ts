@@ -45,6 +45,8 @@ export function makeChat(partial: Partial<Chat> = {}): Chat {
     createdAt: new Date().toISOString(),
     id: createRandomUUID(),
     messages: [],
+    contactUnreadCount: 0,
+    ownerUnreadCount: 0,
     ...partial,
   }
 }
@@ -60,6 +62,7 @@ export function makeMessage(partial: Partial<Message> = {}): Message {
     content: 'any-content',
     fileUrl: null,
     type: 'text',
+    read: false,
     ...partial,
   }
 }
