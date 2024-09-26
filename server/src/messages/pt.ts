@@ -23,4 +23,5 @@ export const PortugueseMessages = {
   ADMIN_GET_SESSION_WITHOUT_PASSWORD:
     'Para acessar sua conta, você precisa digitar a senha correta',
   FIELDS_VALIDATION_ERROR: 'Erro de validação dos campos',
+  PASSWORD_MISS_MATCH: 'Senhas não são iguais',
 }

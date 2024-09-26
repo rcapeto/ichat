@@ -1,7 +1,7 @@
-import { Status } from '~/enums/status'
 import { SwaggerComponentType } from '~/docs/components/types'
-import { getContent } from './getContent'
 import { ApiResponseInterface } from '~/entities/apiResponse'
+import { Status } from '~/enums/status'
+import { getContent } from './getContent'
 
 type Method = 'delete' | 'post' | 'get' | 'put' | 'delete' | 'patch'
 
@@ -37,7 +37,7 @@ type Route<RequestBodyType, ResponseType> = {
   parameters?: Param[]
   responses?: Response<ResponseType>[]
   requestBody?: RequestBody<RequestBodyType>
-  isPrivated?: boolean
+  isPrivate?: boolean
 }
 
 export type CreateRouteParams<Body, Response> = {
@@ -81,30 +81,9 @@ export function createRoute<Body, Response>({
         responses,
         parameters: route.parameters,
       },
-      route.isPrivated ? { security: [{ bearerAuth: [] }] } : {},
+      route.isPrivate ? { security: [{ bearerAuth: [] }] } : {},
     )
   })
 
   return correctRoute
 }
-
-// parâmetros no path
-// parameters: [
-//   {
-//     description: 'Specific user id',
-//     in: 'path',
-//     name: 'id',
-//     required: true,
-//     schema: { type: 'string' },
-//   },
-// ],
-// parâmetros no query
-// {
-//   description: 'Current page',
-//   in: 'query',
-//   name: 'page',
-//   required: false,
-//   schema: {
-//     type: 'string',
-//   },
-// },

@@ -1,5 +1,4 @@
-// eslint-disable-next-line prettier/prettier
-import { Chat } from "./Chat";
+import { Chat } from './Chat'
 
 export type Message = {
   id: string
@@ -9,6 +8,7 @@ export type Message = {
   fileUrl: string | null
   chat: Chat | null
   chatId: string | null
+  read: boolean
 }
 
 export class MessageEntity {
@@ -20,5 +20,6 @@ export class MessageEntity {
     public fileUrl: string | null,
     public chat: Chat | null,
     public chatId: string | null,
+    public readed: boolean,
   ) {}
 }

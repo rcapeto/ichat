@@ -8,3 +8,13 @@ export type LoginRequest = {
 export type LoginResponse = {
   session: UserSession
 }
+
+export type RegisterRequest = {
+  firstName: string
+  lastName: string
+  email: string
+  password: string
+  confirmPassword: string
+}
+
+export type RegisterResponse = void

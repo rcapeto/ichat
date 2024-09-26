@@ -9,6 +9,8 @@ export type Chat = {
   ownerId: string
   contact: User
   contactId: string
+  ownerUnreadCount: number
+  contactUnreadCount: number
 }
 
 export class ChatEntity {

@@ -25,4 +25,5 @@ export const EnglishMessages = {
   ADMIN_GET_SESSION_WITHOUT_PASSWORD:
     'To sign in you need the correct password',
   FIELDS_VALIDATION_ERROR: 'Field validation error',
+  PASSWORD_MISS_MATCH: 'Passwords must be the same',
 }

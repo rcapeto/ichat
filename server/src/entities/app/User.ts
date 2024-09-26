@@ -1,5 +1,6 @@
 import { User as DBUser } from '@prisma/client'
 import { PasswordService } from '~/services/password'
+import { getCorrectImagePath } from '~/utils/getCorrectImagePath'
 import { omit } from '~/utils/omit'
 import { Chat } from './Chat'
 
@@ -15,7 +16,7 @@ export type User = {
   invitedChats: Chat[]
 }
 
-export type UserSession = Omit<User, 'password'>
+export type UserSession = Omit<User, 'password' | 'myChats' | 'invitedChats'>
 
 type ChatsParams = {
   myChats?: Chat[]
@@ -42,10 +43,17 @@ export class UserEntity {
     this.id = data.id
     this.myChats = chatParams.myChats
     this.invitedChats = chatParams.invitedChats
+    this.createdAt = data.created_at.toISOString()
   }
 
   getSession(): UserSession {
-    return omit(this, ['password'])
+    return {
+      ...omit(this, ['password']),
+      profileImage: getCorrectImagePath({
+        folder: 'users',
+        imagePath: this.profileImage,
+      }),
+    }
   }
 
   async isSamePassword(password: string) {
