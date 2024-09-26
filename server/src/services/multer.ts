@@ -6,7 +6,9 @@ const folders = serverConfig.uploadFolders
 
 function createFilename(file: Express.Multer.File) {
   const filename = file.originalname
-  return `${Date.now()}-${filename}`
+  const filenameWithoutWhiteSpace = filename.replace(/\s/g, '_')
+
+  return `${Date.now()}-${filenameWithoutWhiteSpace}`
 }
 
 export const uploadMessageAssets = {

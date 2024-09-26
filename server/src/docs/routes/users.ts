@@ -1,17 +1,29 @@
 import {
   FindManyUserRequest,
   FindManyUserResponse,
+  UpdateUserRequest,
+  UpdateUserResponse,
 } from '~/app/repositories/users/types'
 import { DocumentSchema } from '~/docs/types'
-import { createResponseNeedLoginError } from '~/docs/utils/createErrorResponse'
+import {
+  createResponseError,
+  createResponseNeedLoginError,
+} from '~/docs/utils/createErrorResponse'
 import { createRoute } from '~/docs/utils/createRoute'
 import { getCorrectEndpoint } from '~/docs/utils/getCorrectEndpoint'
+import { ErrorType } from '~/enums/errorType'
 import { Status } from '~/enums/status'
+import { Messages } from '~/messages'
 import { endpoints } from '~/routes/endpoints'
+import { dispatchError, dispatchNotFoundError } from '~/utils/dispatchError'
 
 const userEndpoints = endpoints.app.user
 
 const findMany = createRoute<FindManyUserRequest, FindManyUserResponse>
+const update = createRoute<
+  Omit<UpdateUserRequest, 'userId'>,
+  UpdateUserResponse
+>
 
 const tag = 'Users'
 
@@ -56,7 +68,7 @@ const paths = {
                     firstName: 'Berry',
                     lastName: 'Schmitt',
                     email: 'Aubree_Lowe83@yahoo.com',
-                    profileImage: null,
+                    profileImage: '',
                     id: '00733f4a-7139-4330-87d2-b99530b291a0',
                     createdAt: '2024-09-25T21:46:26.000Z',
                   },
@@ -65,6 +77,59 @@ const paths = {
             },
             contentSchemaPath: 'FindManyUsersResponse',
             description: 'Todos os usuários',
+          },
+        ],
+      },
+    ],
+  }),
+  [getCorrectEndpoint(userEndpoints.update)]: update({
+    routes: [
+      {
+        method: 'put',
+        description: 'Atualizar dados do usuário',
+        summary: 'Atualizar os dados',
+        tags: [tag],
+        isPrivate: true,
+        requestBody: {
+          schema: 'UpdateRequest',
+          example: {
+            email: 'new-email',
+            firstName: 'new-first-name',
+            lastName: 'new-last-name',
+            profileImage: 'new-profile-image',
+          },
+        },
+        responses: [
+          createResponseNeedLoginError(),
+          createResponseError(
+            dispatchNotFoundError(Messages.DOES_NOT_FOUND_USER),
+            'Quando o usuário não é encontrado',
+          ),
+          createResponseError(
+            dispatchError({
+              errorType: ErrorType.UNAUTHORIZED,
+              message: Messages.EMAIL_IS_ALREADY_IN_REGISTERED,
+              status: Status.UNAUTHORIZED,
+            }),
+            'Quando o email que o usuário está tentando atualizar já está sendo utilizado',
+          ),
+          {
+            code: Status.OK,
+            content: {
+              ok: true,
+              data: {
+                user: {
+                  firstName: 'John',
+                  lastName: 'Doe',
+                  email: 'johndoe@email.com',
+                  profileImage: '',
+                  id: 'uuid',
+                  createdAt: '2024-09-25T21:46:26.000Z',
+                },
+              },
+            },
+            contentSchemaPath: 'UpdateResponse',
+            description: 'Dados do usuário atualizado',
           },
         ],
       },
@@ -99,6 +164,25 @@ const schemas: DocumentSchema = {
           },
         },
       },
+    },
+  },
+  UpdateRequest: {
+    type: 'object',
+    properties: {
+      firstName: { type: 'string' },
+      lastName: { type: 'string' },
+      email: { type: 'string' },
+      profileImage: { type: 'string' },
+    },
+  },
+  UpdateResponse: {
+    type: 'object',
+    properties: {
+      firstName: { type: 'string' },
+      lastName: { type: 'string' },
+      email: { type: 'string' },
+      profileImage: { type: 'string' },
+      id: { type: 'string' },
     },
   },
 }

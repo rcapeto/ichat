@@ -12,3 +12,15 @@ export type FindManyUserResponse = {
   page: number
   totalPages: number
 }
+
+export type UpdateUserRequest = {
+  userId: string
+  profileImage?: string | null
+  firstName?: string | null
+  lastName?: string | null
+  email?: string | null
+}
+
+export type UpdateUserResponse = {
+  user: UserSession
+}

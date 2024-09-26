@@ -19,6 +19,7 @@ import { Messages } from '~/messages'
 import { endpoints } from '~/routes/endpoints'
 import { makeUser } from '~/tests/utils'
 import { dispatchError, dispatchNotFoundError } from '~/utils/dispatchError'
+import { omit } from '~/utils/omit'
 
 const authEndpoints = endpoints.authentication
 
@@ -53,7 +54,11 @@ const paths = {
             content: {
               ok: true,
               data: {
-                session: makeUser(),
+                session: omit(makeUser({ profileImage: '' }), [
+                  'password',
+                  'invitedChats',
+                  'myChats',
+                ]),
                 token: 'token',
               },
             },

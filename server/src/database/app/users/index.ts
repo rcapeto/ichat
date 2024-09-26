@@ -2,13 +2,43 @@ import { UserRepository } from '~/app/repositories/users'
 import {
   FindManyUserRequest,
   FindManyUserResponse,
+  UpdateUserRequest,
+  UpdateUserResponse,
 } from '~/app/repositories/users/types'
 import { serverConfig } from '~/config/server'
 import { client } from '~/database/client'
 import { UserEntity } from '~/entities/app/User'
+import { ErrorType } from '~/enums/errorType'
+import { Status } from '~/enums/status'
+import { Messages } from '~/messages'
+import { dispatchError, dispatchNotFoundError } from '~/utils/dispatchError'
 import { lowerCase } from '~/utils/strings'
 
 export class DatabaseUserRepository implements UserRepository {
+  async update(request: UpdateUserRequest): Promise<UpdateUserResponse> {
+    const { userId, email, firstName, profileImage, lastName } = request
+
+    const user = await this.findUserById(userId)
+
+    await Promise.all([this.checkIfExistsUserWithEmail(email)])
+
+    const updatedUser = await client.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        email: email || user.email,
+        first_name: firstName || user.first_name,
+        profile_image: profileImage ?? user.profile_image,
+        last_name: lastName || user.last_name,
+      },
+    })
+
+    return {
+      user: new UserEntity(updatedUser).getSession(),
+    }
+  }
+
   async findMany(request: FindManyUserRequest): Promise<FindManyUserResponse> {
     const { userId, query } = request
     const page = Number(request.page)
@@ -85,5 +115,35 @@ export class DatabaseUserRepository implements UserRepository {
         },
       },
     })
+  }
+
+  async checkIfExistsUserWithEmail(email: string) {
+    const user = await client.user.findUnique({
+      where: {
+        email,
+      },
+    })
+
+    if (user) {
+      throw dispatchError({
+        errorType: ErrorType.UNAUTHORIZED,
+        message: Messages.EMAIL_IS_ALREADY_IN_REGISTERED,
+        status: Status.UNAUTHORIZED,
+      })
+    }
+  }
+
+  async findUserById(id: string) {
+    const user = await client.user.findUnique({
+      where: {
+        id,
+      },
+    })
+
+    if (!user) {
+      throw dispatchNotFoundError(Messages.DOES_NOT_FOUND_USER)
+    }
+
+    return user
   }
 }

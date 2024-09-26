@@ -1,12 +1,14 @@
 import { z } from 'zod'
 import {
+  getEmailSchema,
   getIdSchema,
-  getOptionalNumberSchema,
   getOptionalStringSchema,
 } from '~/validation/default'
 
 export const validation = z.object({
   userId: getIdSchema('id do usuário'),
-  page: getOptionalNumberSchema(1),
-  query: getOptionalStringSchema(),
+  profileImage: getOptionalStringSchema(),
+  firstName: getOptionalStringSchema(),
+  lastName: getOptionalStringSchema(),
+  email: getEmailSchema('email').nullable(),
 })

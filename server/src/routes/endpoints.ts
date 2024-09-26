@@ -9,6 +9,7 @@ const appRoutes = {
   logs: '/logs',
   user: {
     findMany: '/users',
+    update: '/user',
   },
 }
 
