@@ -1,19 +1,44 @@
 import { Socket } from 'socket.io'
+import { SetOnlineUserParams } from './types'
 
 export class SocketInstance {
   private static INSTANCE: SocketInstance
-  public socket: Socket
-  public onlineUsers = new Map<string, string>() // userId, socket.id
+  private socket: Socket | null = null
+  private onlineUsers = new Map<string, string>() // userId, socket.id
 
-  private constructor(newSocket: Socket) {
-    this.socket = newSocket
-  }
+  private constructor() {}
 
-  public static getInstance(newSocket: Socket) {
+  public static getInstance() {
     if (!this.INSTANCE) {
-      this.INSTANCE = new SocketInstance(newSocket)
+      this.INSTANCE = new SocketInstance()
     }
 
     return this.INSTANCE
   }
+
+  setSocket(socket: Socket) {
+    this.socket = socket
+  }
+
+  getSocket(): Socket | null {
+    return this.socket
+  }
+
+  setOnlineUser({ socketId, userId }: SetOnlineUserParams) {
+    this.onlineUsers.set(userId, socketId)
+  }
+
+  getUsers(): string[] {
+    return Array.from(this.onlineUsers.values())
+  }
+
+  getSocketIdByUserId(userId: string): string {
+    return this.onlineUsers.get(userId)
+  }
+
+  removeOnlineUserById(userId: string) {
+    this.onlineUsers.delete(userId)
+  }
 }
+
+export const socketInstance = SocketInstance.getInstance()

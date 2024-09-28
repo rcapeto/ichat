@@ -38,7 +38,7 @@ describe('UpdatePasswordUserUseCase', () => {
 
   it('should not update user password if new password is the same', () => {
     const me = makeUser({
-      password: randomUUID(),
+      password: SECRET_PASSWORD,
     })
     const newPassword = SECRET_PASSWORD
 

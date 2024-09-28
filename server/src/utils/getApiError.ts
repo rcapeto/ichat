@@ -1,13 +1,15 @@
 import { ZodError } from 'zod'
 
-import { Messages } from '~/messages'
-import { logger } from '~/services/logger'
 import { ApiError } from '~/entities/apiError'
 import { ErrorType } from '~/enums/errorType'
 import { Status } from '~/enums/status'
+import { Messages } from '~/messages'
+import { logger } from '~/services/logger'
 import { dispatchError, dispatchValidationError } from './dispatchError'
 
 export function getAPIError(error: unknown) {
+  console.log('@api-error', error)
+
   if (error instanceof ZodError) {
     const errorMessage = error.issues.map((issue) => issue.message).join(', ')
 

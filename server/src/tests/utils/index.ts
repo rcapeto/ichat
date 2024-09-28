@@ -1,7 +1,7 @@
 import { Chat } from '~/entities/app/Chat'
 import { Logger } from '~/entities/app/Logger'
 import { Message } from '~/entities/app/Message'
-import { User } from '~/entities/app/User'
+import { User, UserSession } from '~/entities/app/User'
 import { APILoggerType } from '~/enums/apiLoggerType'
 import { createRandomUUID } from '~/utils/createRandomUUID'
 
@@ -63,6 +63,23 @@ export function makeMessage(partial: Partial<Message> = {}): Message {
     fileUrl: null,
     type: 'text',
     read: false,
+    owner: {
+      ...makeUser(),
+    },
+    ...partial,
+  }
+}
+
+export function makeUserSession(partial?: Partial<UserSession>): UserSession {
+  const user = makeUser()
+
+  return {
+    createdAt: user.createdAt,
+    email: user.email,
+    firstName: user.firstName,
+    id: user.id,
+    lastName: user.lastName,
+    profileImage: user.profileImage ?? '',
     ...partial,
   }
 }

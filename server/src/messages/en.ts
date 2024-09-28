@@ -26,4 +26,5 @@ export const EnglishMessages = {
     'To sign in you need the correct password',
   FIELDS_VALIDATION_ERROR: 'Field validation error',
   PASSWORD_MISS_MATCH: 'Passwords must be the same',
+  CHAT_ALREADY_EXISTS: 'You have a chat with this contact',
 }

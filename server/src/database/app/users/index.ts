@@ -122,8 +122,6 @@ export class DatabaseUserRepository implements UserRepository {
 
     const count = await this.count(query, userId)
 
-    console.log('@@@ users', { users })
-
     return {
       count,
       page,

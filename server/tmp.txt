@@ -2,3 +2,5 @@
 [2024-09-24T14:58:54.269Z] - {{ ERROR }} - Cannot destructure property 'session' of '(intermediate value)' as it is undefined.
 [2024-09-24T17:09:22.491Z] - {{ ERROR }} - Method not implemented.
 [2024-09-24T17:10:29.876Z] - {{ ERROR }} - Method not implemented.
+[2024-09-28T03:53:42.344Z] - {{ ERROR }} - Cannot read properties of undefined (reading 'to')
+[2024-09-28T03:55:50.438Z] - {{ ERROR }} - Cannot read properties of undefined (reading 'to')

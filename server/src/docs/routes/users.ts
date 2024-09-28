@@ -194,13 +194,6 @@ const paths = {
 }
 
 const schemas: DocumentSchema = {
-  LoginRequest: {
-    type: 'object',
-    properties: {
-      email: { type: 'string' },
-      password: { type: 'string' },
-    },
-  },
   FindManyUsersResponse: {
     type: 'object',
     properties: {

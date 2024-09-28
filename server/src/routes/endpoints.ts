@@ -12,6 +12,9 @@ const appRoutes = {
     update: '/user',
     updatePassword: '/user/password',
   },
+  chat: {
+    create: '/chat',
+  },
 }
 
 export const endpoints = {

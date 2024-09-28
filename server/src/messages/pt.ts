@@ -24,4 +24,5 @@ export const PortugueseMessages = {
     'Para acessar sua conta, você precisa digitar a senha correta',
   FIELDS_VALIDATION_ERROR: 'Erro de validação dos campos',
   PASSWORD_MISS_MATCH: 'Senhas não são iguais',
+  CHAT_ALREADY_EXISTS: 'Você já possui uma conversa com esse contato',
 }

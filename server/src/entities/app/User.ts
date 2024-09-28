@@ -1,4 +1,4 @@
-import { User as DBUser } from '@prisma/client'
+import { PrismaUserEntity } from '~/entities/app/PrismaEntities'
 import { PasswordService } from '~/services/password'
 import { getCorrectImagePath } from '~/utils/getCorrectImagePath'
 import { omit } from '~/utils/omit'
@@ -34,7 +34,7 @@ export class UserEntity {
   public myChats: Chat[]
   public invitedChats: Chat[]
 
-  constructor(data: DBUser, chatParams: ChatsParams = {}) {
+  constructor(data: PrismaUserEntity, chatParams: ChatsParams = {}) {
     this.firstName = data.first_name
     this.lastName = data.last_name
     this.password = data.password
