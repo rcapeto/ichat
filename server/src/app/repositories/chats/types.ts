@@ -16,3 +16,14 @@ export type FindMyChatsRequest = {
 export type FindMyChatsResponse = {
   chats: SimpleChat[]
 }
+
+export type ReadAllChatMessagesRequest = {
+  userId: string
+  chatId: string
+}
+
+export type ReadAllChatMessagesResponse = {
+  chatId: string
+  contactId: string
+  ownerId: string
+}

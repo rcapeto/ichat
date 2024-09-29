@@ -4,16 +4,51 @@ import {
   CreateChatResponse,
   FindMyChatsRequest,
   FindMyChatsResponse,
+  ReadAllChatMessagesRequest,
+  ReadAllChatMessagesResponse,
 } from '~/app/repositories/chats/types'
 import { Chat } from '~/entities/app/Chat'
 import { ErrorType } from '~/enums/errorType'
 import { Status } from '~/enums/status'
 import { Messages } from '~/messages'
-import { dispatchError } from '~/utils/dispatchError'
+import { dispatchError, dispatchNotFoundError } from '~/utils/dispatchError'
 import { makeChat } from './utils'
 
 export class TestChatRepository implements ChatRepository {
   private chats: Chat[] = []
+
+  async readAllMessages(
+    request: ReadAllChatMessagesRequest,
+  ): Promise<ReadAllChatMessagesResponse> {
+    const { chatId, userId } = request
+
+    const chat = await this.findChatById(chatId)
+
+    if (!chat) {
+      throw dispatchNotFoundError(Messages.DOES_NOT_FOUND_CHAT)
+    }
+
+    const usersInChat = [chat.ownerId, chat.contactId]
+
+    if (!usersInChat.includes(userId)) {
+      throw dispatchError({
+        errorType: ErrorType.ERROR,
+        message: Messages.ERROR_READ_MESSAGES,
+        status: Status.BAD_REQUEST,
+      })
+    }
+
+    chat.messages = chat.messages.map((message) => ({
+      ...message,
+      read: message.ownerId !== userId,
+    }))
+
+    return {
+      chatId: chat.id,
+      contactId: chat.contactId,
+      ownerId: chat.ownerId,
+    }
+  }
 
   async findMyChats(request: FindMyChatsRequest): Promise<FindMyChatsResponse> {
     const { userId } = request
@@ -35,6 +70,7 @@ export class TestChatRepository implements ChatRepository {
           messages: chat.messages,
           name: `${chatInfo.firstName} ${chatInfo.lastName}`,
           notification: isMe ? chat.contactUnreadCount : chat.ownerUnreadCount,
+          updatedAt: chat.updatedAt,
         }
       }),
     }
@@ -67,6 +103,11 @@ export class TestChatRepository implements ChatRepository {
         status: Status.BAD_REQUEST,
       })
     }
+  }
+
+  async findChatById(chatId: string) {
+    const chat = this.chats.find((chat) => chat.id === chatId)
+    return chat
   }
 
   setChat(...chats: Chat[]) {

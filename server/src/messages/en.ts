@@ -28,4 +28,6 @@ export const EnglishMessages = {
   FIELDS_VALIDATION_ERROR: 'Field validation error',
   PASSWORD_MISS_MATCH: 'Passwords must be the same',
   CHAT_ALREADY_EXISTS: 'You have a chat with this contact',
+  ERROR_READ_MESSAGES:
+    'To change all messages status, you need to be in the chat',
 }

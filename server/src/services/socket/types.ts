@@ -24,3 +24,8 @@ export type CreateMessageSocketEventResponse = {
   ownerUnreadCount: number
   contactId: string
 }
+
+export type ReadChatMessagesSocketEventResponse = {
+  chatId: string
+  userReadMessagesId: string
+}

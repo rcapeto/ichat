@@ -26,8 +26,10 @@ export class DatabaseMessageRepository implements MessageRepository {
       },
     })
 
-    const contactUnreadCount = chat.contact_unread_count + 1
-    const ownerUnreadCount = chat.owner_unread_count
+    const userIsOwner = chat.owner_id === userId
+
+    const contactUnreadCount = chat.contact_unread_count + (userIsOwner ? 1 : 0)
+    const ownerUnreadCount = chat.owner_unread_count + (userIsOwner ? 0 : 1)
 
     await client.chat.update({
       where: {

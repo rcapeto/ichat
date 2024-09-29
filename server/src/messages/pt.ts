@@ -26,4 +26,6 @@ export const PortugueseMessages = {
   FIELDS_VALIDATION_ERROR: 'Erro de validação dos campos',
   PASSWORD_MISS_MATCH: 'Senhas não são iguais',
   CHAT_ALREADY_EXISTS: 'Você já possui uma conversa com esse contato',
+  ERROR_READ_MESSAGES:
+    'Para alterar os status das mensagens você precisa ser membro desse chat',
 }

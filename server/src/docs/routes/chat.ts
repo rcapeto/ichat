@@ -3,11 +3,13 @@ import {
   CreateChatResponse,
   FindMyChatsRequest,
   FindMyChatsResponse,
+  ReadAllChatMessagesRequest,
 } from '~/app/repositories/chats/types'
 import { DocumentSchema } from '~/docs/types'
 import {
   createResponseError,
   createResponseNeedLoginError,
+  createResponseValidationError,
 } from '~/docs/utils/createErrorResponse'
 import { createRoute } from '~/docs/utils/createRoute'
 import { getCorrectEndpoint } from '~/docs/utils/getCorrectEndpoint'
@@ -28,6 +30,11 @@ const create = createRoute<
 const findMyChats = createRoute<
   Omit<FindMyChatsRequest, 'userId'>,
   FindMyChatsResponse
+>
+
+const readAllMessages = createRoute<
+  Omit<ReadAllChatMessagesRequest, 'userId'>,
+  void
 >
 
 const tag = 'Chats'
@@ -110,6 +117,41 @@ const paths = {
                 ],
               },
             },
+            contentSchemaPath: 'FindMyChatsResponse',
+            description: 'Meus chats',
+          },
+        ],
+      },
+    ],
+  }),
+  [getCorrectEndpoint(chatEndpoints.readMessages)]: readAllMessages({
+    routes: [
+      {
+        method: 'put',
+        description: 'Ler mensagens do outro usuário dentro de um chat',
+        summary: 'Ler mensagens',
+        tags: [tag],
+        requestBody: {
+          example: {
+            chatId: 'chat-uuid',
+          },
+          schema: 'ReadAllChatMessagesRequest',
+        },
+        isPrivate: true,
+        responses: [
+          createResponseNeedLoginError(),
+          createResponseValidationError(),
+          createResponseError(
+            dispatchError({
+              errorType: ErrorType.ERROR,
+              status: Status.BAD_REQUEST,
+              message: Messages.DOES_NOT_FOUND_CHAT,
+            }),
+            'Quando o chat não é encontrado',
+          ),
+          {
+            code: Status.OK,
+            content: {},
             contentSchemaPath: 'FindMyChatsResponse',
             description: 'Meus chats',
           },
@@ -217,6 +259,12 @@ const schemas: DocumentSchema = {
           },
         },
       },
+    },
+  },
+  ReadAllChatMessagesRequest: {
+    type: 'object',
+    properties: {
+      chatId: { type: 'string' },
     },
   },
 }

@@ -22,7 +22,6 @@ export class TestMessageRepository implements MessageRepository {
       owner: makeUser({ id: userId }),
       ownerId: userId,
       chatId: chat.id,
-      chat,
       content,
       fileUrl: file,
       read: false,

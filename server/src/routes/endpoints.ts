@@ -15,6 +15,7 @@ const appRoutes = {
   chat: {
     create: '/chat',
     myChats: '/chats',
+    readMessages: '/chat/read-messages',
   },
   message: {
     create: '/message',
