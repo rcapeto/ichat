@@ -4,5 +4,5 @@ export enum SocketEvents {
   USER_DISCONNECT = 'user_disconnect',
   MESSAGE = 'message',
   CREATE_CHAT = 'create_chat',
-  UPDATE_MEMBER_READ_COUNT = 'update_member_count',
+  USER_READ_MESSAGE = 'user_read_message',
 }

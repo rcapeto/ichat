@@ -2,7 +2,7 @@ import { createController } from '~/app/controllers/createController'
 import { UpdateUserUseCase } from '~/app/use-cases/users/update'
 import { Status } from '~/enums/status'
 
-const loggerAction = 'When someone try to update your profile'
+const loggerAction = 'UpdateUser'
 
 export const UpdateUserController = createController<UpdateUserUseCase>(
   {

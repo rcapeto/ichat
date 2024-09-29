@@ -2,7 +2,7 @@ import { createController } from '~/app/controllers/createController'
 import { RegisterUseCase } from '~/app/use-cases/auth/register'
 import { Status } from '~/enums/status'
 
-const loggerAction = 'When someone try to register'
+const loggerAction = 'CreateAccount'
 
 export const RegisterController = createController<RegisterUseCase>(
   {

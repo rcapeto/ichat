@@ -4,7 +4,8 @@ import { Status } from '~/enums/status'
 import { SocketEvents } from '~/services/socket'
 import { socketInstance } from '~/services/socket/socket-instance'
 
-const loggerAction = 'When an user tries to create a new chat'
+const loggerAction = 'CreateChat'
+const socket = socketInstance.getSocket()
 
 export const CreateChatController = createController<CreateChatUseCase>(
   {
@@ -20,10 +21,7 @@ export const CreateChatController = createController<CreateChatUseCase>(
     const owner = socketInstance.getSocketIdByUserId(chat.ownerId)
     const contact = socketInstance.getSocketIdByUserId(chat.contactId)
 
-    socketInstance
-      .getSocket()
-      ?.to([owner, contact])
-      .emit(SocketEvents.CREATE_CHAT, { chat })
+    socket?.to([owner, contact]).emit(SocketEvents.CREATE_CHAT, { chat })
 
     return { chat }
   },

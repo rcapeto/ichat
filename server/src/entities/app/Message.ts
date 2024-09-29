@@ -1,18 +1,16 @@
 import { PrismaMessageEntity } from '~/entities/app/PrismaEntities'
 import { getCorrectImagePath } from '~/utils/getCorrectImagePath'
-import { Chat, ChatEntity } from './Chat'
 import { UserEntity, UserSession } from './User'
 
 export type Message = {
   id: string
   createdAt: string
   content: string
-  type: string
   fileUrl: string | null
-  chat: Chat | null
   chatId: string | null
   read: boolean
   owner: UserSession
+  ownerId: string
 }
 
 export class MessageEntity {
@@ -20,7 +18,6 @@ export class MessageEntity {
 
   getMessageFormat(): Message {
     return {
-      chat: new ChatEntity(this.message.chat).getChatFormat(),
       chatId: this.message.chat_id,
       content: this.message.content,
       createdAt: this.message.created_at.toISOString(),
@@ -31,7 +28,7 @@ export class MessageEntity {
       id: this.message.id,
       owner: new UserEntity(this.message.owner).getSession(),
       read: this.message.read,
-      type: this.message.type,
+      ownerId: this.message.owner_id,
     }
   }
 }

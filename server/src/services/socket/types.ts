@@ -1,4 +1,5 @@
 import { Chat } from '~/entities/app/Chat'
+import { Message } from '~/entities/app/Message'
 
 export type SetOnlineUserParams = {
   socketId: string
@@ -15,4 +16,11 @@ export type UserDisconnectSocketEventParams = {
 
 export type CreateChatSocketEventResponse = {
   chat: Chat
+}
+
+export type CreateMessageSocketEventResponse = {
+  message: Message
+  contactUnreadCount: number
+  ownerUnreadCount: number
+  contactId: string
 }

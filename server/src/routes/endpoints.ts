@@ -15,6 +15,9 @@ const appRoutes = {
   chat: {
     create: '/chat',
   },
+  message: {
+    create: '/message',
+  },
 }
 
 export const endpoints = {

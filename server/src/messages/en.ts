@@ -14,6 +14,7 @@ export const EnglishMessages = {
   EMAIL_IS_ALREADY_IN_REGISTERED: 'This email is already registered',
   DOCUMENT_IS_ALREADY_IN_REGISTERED: 'This email is already registered',
   DOES_NOT_FOUND_USER: 'Does not found user with this ID',
+  DOES_NOT_FOUND_CHAT: 'Does not found chat with this ID',
   UNAUTHORIZED: 'You are not authorized to do this request',
   UNAUTHORIZED_TOKEN: 'Invalid token, please try again',
   CHANGE_PASSWORD_ERROR:

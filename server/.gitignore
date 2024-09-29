@@ -2,8 +2,7 @@ node_modules
 .env
 
 # Uploads
-upload_foods_images
-upload_messages_image
+upload_messages_files
 upload_users_image
 # Logger
 tmp

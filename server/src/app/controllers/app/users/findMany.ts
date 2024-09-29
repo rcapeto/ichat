@@ -2,7 +2,7 @@ import { createController } from '~/app/controllers/createController'
 import { FindManyUsersUseCase } from '~/app/use-cases/users/findMany'
 import { Status } from '~/enums/status'
 
-const loggerAction = 'When someone try to get users'
+const loggerAction = 'FindManyUsers'
 
 export const FindManyUsersController = createController<FindManyUsersUseCase>(
   {

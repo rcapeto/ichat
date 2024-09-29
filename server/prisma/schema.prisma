@@ -27,7 +27,6 @@ model Message {
   id         String   @id @unique @default(uuid())
   created_at DateTime @default(now())
   content    String
-  type       String
   file_url   String?
   chat       Chat?    @relation(fields: [chat_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   chat_id    String?

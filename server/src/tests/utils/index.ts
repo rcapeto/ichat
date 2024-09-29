@@ -53,6 +53,7 @@ export function makeChat(partial: Partial<Chat> = {}): Chat {
 
 export function makeMessage(partial: Partial<Message> = {}): Message {
   const chat = makeChat()
+  const owner = makeUser()
 
   return {
     createdAt: new Date().toISOString(),
@@ -61,11 +62,9 @@ export function makeMessage(partial: Partial<Message> = {}): Message {
     chatId: chat.id,
     content: 'any-content',
     fileUrl: null,
-    type: 'text',
     read: false,
-    owner: {
-      ...makeUser(),
-    },
+    owner,
+    ownerId: owner.id,
     ...partial,
   }
 }
