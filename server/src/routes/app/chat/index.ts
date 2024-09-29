@@ -2,6 +2,7 @@ import { Router } from 'express'
 import { ensureUserIsAuthenticated } from '~/middlewares/ensureUserIsAuthenticated'
 import { endpoints } from '~/routes/endpoints'
 import { create } from './create'
+import { findManyMessages } from './findManyMessages'
 import { findMyChats } from './findMyChats'
 import { readMessages } from './readMessages'
 
@@ -14,4 +15,10 @@ chatRoutes.put(
   chatEndpoints.readMessages,
   ensureUserIsAuthenticated,
   readMessages,
+)
+
+chatRoutes.get(
+  chatEndpoints.findManyMessages,
+  ensureUserIsAuthenticated,
+  findManyMessages,
 )

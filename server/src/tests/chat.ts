@@ -2,6 +2,8 @@ import { ChatRepository } from '~/app/repositories/chats'
 import {
   CreateChatRequest,
   CreateChatResponse,
+  FindManyChatMessagesRequest,
+  FindManyChatMessagesResponse,
   FindMyChatsRequest,
   FindMyChatsResponse,
   ReadAllChatMessagesRequest,
@@ -16,6 +18,52 @@ import { makeChat } from './utils'
 
 export class TestChatRepository implements ChatRepository {
   private chats: Chat[] = []
+  private maxMessagesPerPage = 20
+
+  async findManyChatMessages(
+    request: FindManyChatMessagesRequest,
+  ): Promise<FindManyChatMessagesResponse> {
+    const { chatId, lastMessageId } = request
+    const chat = await this.findChatById(chatId)
+
+    const chatMessages = await this.getChatMessagesById(chat.id)
+
+    const lastMessageIndex = chatMessages
+      .reverse()
+      .findIndex((message) => message.id === lastMessageId)
+
+    if (lastMessageIndex === -1) {
+      throw dispatchNotFoundError(Messages.DOES_NOT_FOUND_MESSAGE)
+    }
+
+    const count = await this.countMessagesInChat(chat.id)
+    const lastIndex =
+      count - lastMessageIndex > this.maxMessagesPerPage
+        ? this.maxMessagesPerPage
+        : count - lastMessageIndex
+
+    const messages = chatMessages.slice(
+      lastMessageIndex + 1,
+      lastMessageIndex + lastIndex,
+    )
+
+    return {
+      lastPage: messages.length < this.maxMessagesPerPage,
+      messages,
+    }
+  }
+
+  async countMessagesInChat(chatId: string) {
+    const chat = await this.findChatById(chatId)
+    return chat.messages.length
+  }
+
+  async getChatMessagesById(chatId: string) {
+    const chat = await this.findChatById(chatId)
+    const messages = chat.messages.reverse()
+
+    return messages
+  }
 
   async readAllMessages(
     request: ReadAllChatMessagesRequest,
@@ -67,7 +115,7 @@ export class TestChatRepository implements ChatRepository {
         return {
           avatar: chatInfo.profileImage,
           id: chat.id,
-          messages: chat.messages,
+          messages: chat.messages.reverse().slice(0, 20),
           name: `${chatInfo.firstName} ${chatInfo.lastName}`,
           notification: isMe ? chat.contactUnreadCount : chat.ownerUnreadCount,
           updatedAt: chat.updatedAt,

@@ -16,6 +16,7 @@ const appRoutes = {
     create: '/chat',
     myChats: '/chats',
     readMessages: '/chat/read-messages',
+    findManyMessages: '/chats/:chatId/messages/:lastMessageId',
   },
   message: {
     create: '/message',

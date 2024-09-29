@@ -2,10 +2,12 @@
 import {
   CreateChatRequest,
   CreateChatResponse,
+  FindManyChatMessagesRequest,
+  FindManyChatMessagesResponse,
   FindMyChatsRequest,
   FindMyChatsResponse,
   ReadAllChatMessagesRequest,
-  ReadAllChatMessagesResponse,
+  ReadAllChatMessagesResponse
 } from './types';
 
 export abstract class ChatRepository {
@@ -17,4 +19,8 @@ export abstract class ChatRepository {
   abstract readAllMessages(
     request: ReadAllChatMessagesRequest,
   ): Promise<ReadAllChatMessagesResponse>
+
+  abstract findManyChatMessages(
+    request: FindManyChatMessagesRequest,
+  ): Promise<FindManyChatMessagesResponse>
 }

@@ -5,7 +5,7 @@ node_modules
 upload_messages_files
 upload_users_image
 # Logger
-tmp
+tmp.txt
 
 # mac
 .DS_Store

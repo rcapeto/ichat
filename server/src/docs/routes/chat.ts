@@ -1,6 +1,8 @@
 import {
   CreateChatRequest,
   CreateChatResponse,
+  FindManyChatMessagesRequest,
+  FindManyChatMessagesResponse,
   FindMyChatsRequest,
   FindMyChatsResponse,
   ReadAllChatMessagesRequest,
@@ -35,6 +37,11 @@ const findMyChats = createRoute<
 const readAllMessages = createRoute<
   Omit<ReadAllChatMessagesRequest, 'userId'>,
   void
+>
+
+const findManyChatMessages = createRoute<
+  FindManyChatMessagesRequest,
+  FindManyChatMessagesResponse
 >
 
 const tag = 'Chats'
@@ -143,7 +150,7 @@ const paths = {
           createResponseValidationError(),
           createResponseError(
             dispatchError({
-              errorType: ErrorType.ERROR,
+              errorType: ErrorType.NOT_FOUND,
               status: Status.BAD_REQUEST,
               message: Messages.DOES_NOT_FOUND_CHAT,
             }),
@@ -153,6 +160,75 @@ const paths = {
             code: Status.OK,
             content: {},
             contentSchemaPath: 'FindMyChatsResponse',
+            description: 'Meus chats',
+          },
+        ],
+      },
+    ],
+  }),
+  [getCorrectEndpoint(chatEndpoints.findManyMessages)]: findManyChatMessages({
+    routes: [
+      {
+        method: 'get',
+        description: 'Paginação para obter as mensagens do chat que restam',
+        summary: 'Obter mensagens',
+        tags: [tag],
+        parameters: [
+          {
+            in: 'path',
+            name: 'chatId',
+            description: 'ID do chat',
+            required: true,
+            schema: { type: 'string' },
+          },
+          {
+            in: 'path',
+            name: 'lastMessageId',
+            description: 'ID da última mensagem',
+            required: true,
+            schema: { type: 'string' },
+          },
+        ],
+        isPrivate: true,
+        responses: [
+          createResponseNeedLoginError(),
+          createResponseValidationError(),
+          createResponseError(
+            dispatchError({
+              errorType: ErrorType.NOT_FOUND,
+              status: Status.NOT_FOUND,
+              message: Messages.DOES_NOT_FOUND_MESSAGE,
+            }),
+            'Quando a mensagem não é encontrada',
+          ),
+          {
+            code: Status.OK,
+            content: {
+              ok: true,
+              data: {
+                lastPage: true,
+                messages: [
+                  {
+                    chatId: 'chat-uuid',
+                    content: 'any-message-content',
+                    createdAt: new Date().toISOString(),
+                    fileUrl: '',
+                    id: 'message-uuid',
+                    owner: {
+                      createdAt: new Date().toISOString(),
+                      email: 'johndoe@email.com',
+                      firstName: 'John',
+                      lastName: 'Doe',
+                      id: 'user-uuid',
+                      profileImage: '',
+                    },
+                    ownerId: 'user-uuid',
+                    read: false,
+                  },
+                ],
+              },
+            },
+            contentSchemaPath: 'FindManyChatMessagesResponse',
             description: 'Meus chats',
           },
         ],
@@ -265,6 +341,40 @@ const schemas: DocumentSchema = {
     type: 'object',
     properties: {
       chatId: { type: 'string' },
+    },
+  },
+  FindManyChatMessagesResponse: {
+    type: 'object',
+    properties: {
+      messages: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            chatId: { type: 'string' },
+            content: { type: 'string' },
+            createdAt: { type: 'string' },
+            fileUrl: { type: 'string' },
+            id: { type: 'string' },
+            read: { type: 'boolean' },
+            ownerId: { type: 'boolean' },
+            owner: {
+              type: 'object',
+              properties: {
+                firstName: { type: 'string' },
+                lastName: { type: 'string' },
+                email: { type: 'string' },
+                profileImage: { type: 'string' },
+                createdAt: { type: 'string' },
+                id: { type: 'string' },
+              },
+            },
+          },
+        },
+      },
+      lastPage: {
+        type: 'boolean',
+      },
     },
   },
 }

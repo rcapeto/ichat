@@ -5,11 +5,10 @@
 [2024-09-28T03:53:42.344Z] - {{ ERROR }} - Cannot read properties of undefined (reading 'to')
 [2024-09-28T03:55:50.438Z] - {{ ERROR }} - Cannot read properties of undefined (reading 'to')
 [2024-09-29T02:48:22.119Z] - {{ ERROR }} - 
-Invalid `prisma.chat.update()` invocation:
-
-
-Unique constraint failed on the fields: (`id`)
 [2024-09-29T02:49:53.944Z] - {{ ERROR }} - Cannot read properties of undefined (reading 'first_name')
 [2024-09-29T02:51:38.182Z] - {{ ERROR }} - Cannot read properties of undefined (reading 'first_name')
 [2024-09-29T02:52:23.405Z] - {{ ERROR }} - Cannot read properties of undefined (reading 'first_name')
 [2024-09-29T03:35:54.801Z] - {{ ERROR }} - Cannot read properties of undefined (reading 'first_name')
+[2024-09-29T18:48:18.190Z] - {{ ERROR }} - Method not implemented.
+[2024-09-29T18:48:53.244Z] - {{ ERROR }} - Method not implemented.
+[2024-09-29T18:55:56.620Z] - {{ ERROR }} - Cannot read properties of undefined (reading 'messages')

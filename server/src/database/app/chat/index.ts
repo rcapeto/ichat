@@ -2,6 +2,8 @@ import { ChatRepository } from '~/app/repositories/chats'
 import {
   CreateChatRequest,
   CreateChatResponse,
+  FindManyChatMessagesRequest,
+  FindManyChatMessagesResponse,
   FindMyChatsRequest,
   FindMyChatsResponse,
   ReadAllChatMessagesRequest,
@@ -9,6 +11,7 @@ import {
 } from '~/app/repositories/chats/types'
 import { client } from '~/database/client'
 import { ChatEntity } from '~/entities/app/Chat'
+import { MessageEntity } from '~/entities/app/Message'
 import { PrismaChatEntity } from '~/entities/app/PrismaEntities'
 import { ErrorType } from '~/enums/errorType'
 import { Status } from '~/enums/status'
@@ -16,6 +19,47 @@ import { Messages } from '~/messages'
 import { dispatchError, dispatchNotFoundError } from '~/utils/dispatchError'
 
 export class DatabaseChatRepository implements ChatRepository {
+  private maxMessagesPerPage = 20
+
+  async findManyChatMessages(
+    request: FindManyChatMessagesRequest,
+  ): Promise<FindManyChatMessagesResponse> {
+    const { chatId, lastMessageId } = request
+
+    const [chat, lastMessage] = await Promise.all([
+      this.findChatById(chatId),
+      this.findMessageById(lastMessageId),
+    ])
+
+    const messages = await client.message.findMany({
+      where: {
+        chat_id: chat.id,
+        AND: [
+          {
+            created_at: {
+              lt: lastMessage.created_at,
+            },
+          },
+        ],
+      },
+      include: {
+        chat: true,
+        owner: true,
+      },
+      take: this.maxMessagesPerPage,
+      orderBy: {
+        created_at: 'desc',
+      },
+    })
+
+    return {
+      lastPage: messages.length < this.maxMessagesPerPage,
+      messages: messages.map((message) =>
+        new MessageEntity(message).getMessageFormat(),
+      ),
+    }
+  }
+
   async readAllMessages(
     request: ReadAllChatMessagesRequest,
   ): Promise<ReadAllChatMessagesResponse> {
@@ -73,7 +117,6 @@ export class DatabaseChatRepository implements ChatRepository {
 
   async findMyChats(request: FindMyChatsRequest): Promise<FindMyChatsResponse> {
     const { userId } = request
-    const maxMessagesPerChat = 20
 
     const chats = await client.chat.findMany({
       where: {
@@ -98,7 +141,7 @@ export class DatabaseChatRepository implements ChatRepository {
           orderBy: {
             created_at: 'desc',
           },
-          take: maxMessagesPerChat,
+          take: this.maxMessagesPerPage,
         },
         owner: true,
         contact: true,
@@ -173,5 +216,19 @@ export class DatabaseChatRepository implements ChatRepository {
         status: Status.BAD_REQUEST,
       })
     }
+  }
+
+  async findMessageById(messageId: string) {
+    const message = await client.message.findUnique({
+      where: {
+        id: messageId,
+      },
+    })
+
+    if (!message) {
+      throw dispatchNotFoundError(Messages.DOES_NOT_FOUND_MESSAGE)
+    }
+
+    return message
   }
 }

@@ -15,6 +15,7 @@ export const PortugueseMessages = {
   DOCUMENT_IS_ALREADY_IN_REGISTERED: 'Esse documento já está sendo utilizado',
   DOES_NOT_FOUND_USER: 'Não foi encontrado usuário com esse ID',
   DOES_NOT_FOUND_CHAT: 'Não foi encontrado chat com esse ID',
+  DOES_NOT_FOUND_MESSAGE: 'Não foi encontrado mensagem com esse ID',
   UNAUTHORIZED: 'Você não é autorizado para realizar essa requisição',
   UNAUTHORIZED_TOKEN: 'Token inválido, por favor tente novamente',
   CHANGE_PASSWORD_ERROR:
