@@ -1,5 +1,5 @@
-import { User as DBUser } from '@prisma/client'
 import { AuthRepository } from '~/app/repositories/auth'
+import { PrismaUserEntity } from '~/entities/app/PrismaEntities'
 import { User, UserEntity } from '~/entities/app/User'
 import { ErrorType } from '~/enums/errorType'
 import { Status } from '~/enums/status'
@@ -18,7 +18,7 @@ import {
 import { makeUser } from './utils'
 
 export class TestAuthRepository implements AuthRepository {
-  private users: DBUser[] = []
+  private users: PrismaUserEntity[] = []
 
   async register(request: RegisterRequest): Promise<RegisterResponse> {
     const { email, firstName, lastName, password } = request
@@ -72,6 +72,7 @@ export class TestAuthRepository implements AuthRepository {
       last_name: user.lastName,
       password: user.password,
       profile_image: user.profileImage,
+      created_at: new Date(user.createdAt),
     })
   }
 

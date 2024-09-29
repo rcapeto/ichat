@@ -2,10 +2,16 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import express from 'express'
 import path from 'node:path'
-// import { Server as SocketServer } from 'socket.io'
+import { Server as SocketServer } from 'socket.io'
 
 import { serverConfig } from '~/config/server'
 import { routes } from '~/routes'
+import {
+  SocketEvents,
+  UserDisconnectSocketEventParams,
+  UserOnlineSocketEventParams,
+} from '~/services/socket'
+import { socketInstance } from '~/services/socket/socket-instance'
 
 const SERVER_PORT = serverConfig.PORT
 
@@ -44,10 +50,26 @@ const httpServer = server.listen(SERVER_PORT, () => {
 `)
 })
 
-// const io = new SocketServer(httpServer, {
-//   cors: {
-//     origin,
-//   },
-// })
+const io = new SocketServer(httpServer, {
+  cors: {
+    origin: 'http://localhost:3000',
+  },
+})
 
-// io.on('connection', (socket) => {})
+io.on(SocketEvents.CONNECTION, (socket) => {
+  socketInstance.setSocket(socket)
+
+  io.on(SocketEvents.USER_ONLINE, (data: UserOnlineSocketEventParams) => {
+    socketInstance.setOnlineUser({
+      socketId: socket.id,
+      userId: data.userId,
+    })
+  })
+
+  io.on(
+    SocketEvents.USER_DISCONNECT,
+    (data: UserDisconnectSocketEventParams) => {
+      socketInstance.removeOnlineUserById(data.userId)
+    },
+  )
+})

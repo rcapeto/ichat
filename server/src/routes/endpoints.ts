@@ -12,6 +12,15 @@ const appRoutes = {
     update: '/user',
     updatePassword: '/user/password',
   },
+  chat: {
+    create: '/chat',
+    myChats: '/chats',
+    readMessages: '/chat/read-messages',
+    findManyMessages: '/chats/:chatId/messages/:lastMessageId',
+  },
+  message: {
+    create: '/message',
+  },
 }
 
 export const endpoints = {

@@ -1,25 +1,34 @@
-import { Chat } from './Chat'
+import { PrismaMessageEntity } from '~/entities/app/PrismaEntities'
+import { getCorrectImagePath } from '~/utils/getCorrectImagePath'
+import { UserEntity, UserSession } from './User'
 
 export type Message = {
   id: string
   createdAt: string
   content: string
-  type: string
   fileUrl: string | null
-  chat: Chat | null
   chatId: string | null
   read: boolean
+  owner: UserSession
+  ownerId: string
 }
 
 export class MessageEntity {
-  constructor(
-    public id: string,
-    public createdAt: string,
-    public content: string,
-    public type: string,
-    public fileUrl: string | null,
-    public chat: Chat | null,
-    public chatId: string | null,
-    public readed: boolean,
-  ) {}
+  constructor(private message: PrismaMessageEntity) {}
+
+  getMessageFormat(): Message {
+    return {
+      chatId: this.message.chat_id,
+      content: this.message.content,
+      createdAt: this.message.created_at.toISOString(),
+      fileUrl: getCorrectImagePath({
+        imagePath: this.message.file_url,
+        folder: 'message',
+      }),
+      id: this.message.id,
+      owner: new UserEntity(this.message.owner).getSession(),
+      read: this.message.read,
+      ownerId: this.message.owner_id,
+    }
+  }
 }

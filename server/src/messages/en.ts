@@ -14,6 +14,8 @@ export const EnglishMessages = {
   EMAIL_IS_ALREADY_IN_REGISTERED: 'This email is already registered',
   DOCUMENT_IS_ALREADY_IN_REGISTERED: 'This email is already registered',
   DOES_NOT_FOUND_USER: 'Does not found user with this ID',
+  DOES_NOT_FOUND_CHAT: 'Does not found chat with this ID',
+  DOES_NOT_FOUND_MESSAGE: 'Does not found message with this ID',
   UNAUTHORIZED: 'You are not authorized to do this request',
   UNAUTHORIZED_TOKEN: 'Invalid token, please try again',
   CHANGE_PASSWORD_ERROR:
@@ -26,4 +28,7 @@ export const EnglishMessages = {
     'To sign in you need the correct password',
   FIELDS_VALIDATION_ERROR: 'Field validation error',
   PASSWORD_MISS_MATCH: 'Passwords must be the same',
+  CHAT_ALREADY_EXISTS: 'You have a chat with this contact',
+  ERROR_READ_MESSAGES:
+    'To change all messages status, you need to be in the chat',
 }

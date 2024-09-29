@@ -14,6 +14,8 @@ export const PortugueseMessages = {
   EMAIL_IS_ALREADY_IN_REGISTERED: 'Esse email já está sendo utilizado',
   DOCUMENT_IS_ALREADY_IN_REGISTERED: 'Esse documento já está sendo utilizado',
   DOES_NOT_FOUND_USER: 'Não foi encontrado usuário com esse ID',
+  DOES_NOT_FOUND_CHAT: 'Não foi encontrado chat com esse ID',
+  DOES_NOT_FOUND_MESSAGE: 'Não foi encontrado mensagem com esse ID',
   UNAUTHORIZED: 'Você não é autorizado para realizar essa requisição',
   UNAUTHORIZED_TOKEN: 'Token inválido, por favor tente novamente',
   CHANGE_PASSWORD_ERROR:
@@ -24,4 +26,7 @@ export const PortugueseMessages = {
     'Para acessar sua conta, você precisa digitar a senha correta',
   FIELDS_VALIDATION_ERROR: 'Erro de validação dos campos',
   PASSWORD_MISS_MATCH: 'Senhas não são iguais',
+  CHAT_ALREADY_EXISTS: 'Você já possui uma conversa com esse contato',
+  ERROR_READ_MESSAGES:
+    'Para alterar os status das mensagens você precisa ser membro desse chat',
 }
