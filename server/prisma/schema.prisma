@@ -45,6 +45,7 @@ model Chat {
   contact_id           String
   owner_unread_count   Int
   contact_unread_count Int
+  updated_at           DateTime  @default(now())
 }
 
 model Logger {

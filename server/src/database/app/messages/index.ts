@@ -36,6 +36,7 @@ export class DatabaseMessageRepository implements MessageRepository {
       data: {
         owner_unread_count: ownerUnreadCount,
         contact_unread_count: contactUnreadCount,
+        updated_at: new Date(),
       },
     })
 

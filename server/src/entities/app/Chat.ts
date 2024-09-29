@@ -5,6 +5,7 @@ import { UserEntity, UserSession } from './User'
 export type Chat = {
   id: string
   createdAt: string
+  updatedAt: string
   messages: Message[]
   owner: UserSession
   ownerId: string
@@ -12,6 +13,15 @@ export type Chat = {
   contactId: string
   ownerUnreadCount: number
   contactUnreadCount: number
+}
+
+export type SimpleChat = {
+  name: string
+  id: string
+  avatar: string
+  notification: number
+  messages: Message[]
+  updatedAt: string
 }
 
 export class ChatEntity {
@@ -30,6 +40,25 @@ export class ChatEntity {
       ),
       ownerId: this.chat.owner_id,
       ownerUnreadCount: this.chat.owner_unread_count,
+      updatedAt: this.chat.updated_at.toISOString(),
+    }
+  }
+
+  getSimpleChat(loggedUserId: string): SimpleChat {
+    const isMe = this.chat.owner_id === loggedUserId
+    const chatInfo = isMe ? this.chat.contact : this.chat.owner
+
+    return {
+      avatar: chatInfo.profile_image ?? '',
+      id: this.chat.id,
+      messages: this.chat.messages.map((message) =>
+        new MessageEntity(message).getMessageFormat(),
+      ),
+      name: `${chatInfo.first_name} ${chatInfo.last_name}`,
+      notification: isMe
+        ? this.chat.owner_unread_count
+        : this.chat.contact_unread_count,
+      updatedAt: this.chat.updated_at.toISOString(),
     }
   }
 }

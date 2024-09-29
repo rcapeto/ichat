@@ -1,4 +1,4 @@
-import { Chat } from '~/entities/app/Chat'
+import { Chat, SimpleChat } from '~/entities/app/Chat'
 
 export type CreateChatRequest = {
   contactId: string
@@ -7,4 +7,12 @@ export type CreateChatRequest = {
 
 export type CreateChatResponse = {
   chat: Chat
+}
+
+export type FindMyChatsRequest = {
+  userId: string
+}
+
+export type FindMyChatsResponse = {
+  chats: SimpleChat[]
 }

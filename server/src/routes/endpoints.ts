@@ -14,6 +14,7 @@ const appRoutes = {
   },
   chat: {
     create: '/chat',
+    myChats: '/chats',
   },
   message: {
     create: '/message',

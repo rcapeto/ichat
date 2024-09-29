@@ -2,6 +2,8 @@ import { ChatRepository } from '~/app/repositories/chats'
 import {
   CreateChatRequest,
   CreateChatResponse,
+  FindMyChatsRequest,
+  FindMyChatsResponse,
 } from '~/app/repositories/chats/types'
 import { client } from '~/database/client'
 import { ChatEntity } from '~/entities/app/Chat'
@@ -12,6 +14,44 @@ import { Messages } from '~/messages'
 import { dispatchError } from '~/utils/dispatchError'
 
 export class DatabaseChatRepository implements ChatRepository {
+  async findMyChats(request: FindMyChatsRequest): Promise<FindMyChatsResponse> {
+    const { userId } = request
+    const maxMessagesPerChat = 20
+
+    const chats = await client.chat.findMany({
+      where: {
+        OR: [
+          {
+            contact_id: userId,
+          },
+          {
+            owner_id: userId,
+          },
+        ],
+      },
+      orderBy: {
+        updated_at: 'asc',
+      },
+      include: {
+        messages: {
+          include: {
+            owner: true,
+            chat: true,
+          },
+          take: maxMessagesPerChat,
+        },
+        owner: true,
+        contact: true,
+      },
+    })
+
+    return {
+      chats: chats.map((chat) =>
+        new ChatEntity(chat as PrismaChatEntity).getSimpleChat(userId),
+      ),
+    }
+  }
+
   async create(request: CreateChatRequest): Promise<CreateChatResponse> {
     const { contactId, userId } = request
 

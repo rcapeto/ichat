@@ -1,6 +1,8 @@
 import {
   CreateChatRequest,
   CreateChatResponse,
+  FindMyChatsRequest,
+  FindMyChatsResponse,
 } from '~/app/repositories/chats/types'
 import { DocumentSchema } from '~/docs/types'
 import {
@@ -21,6 +23,11 @@ const chatEndpoints = endpoints.app.chat
 const create = createRoute<
   Omit<CreateChatRequest, 'userId'>,
   CreateChatResponse
+>
+
+const findMyChats = createRoute<
+  Omit<FindMyChatsRequest, 'userId'>,
+  FindMyChatsResponse
 >
 
 const tag = 'Chats'
@@ -65,11 +72,46 @@ const paths = {
                   owner: makeUserSession(),
                   ownerId: 'owner-uuid',
                   ownerUnreadCount: 0,
+                  updatedAt: new Date().toISOString(),
                 },
               },
             },
             contentSchemaPath: 'CreateChatResponse',
             description: 'Chat criado',
+          },
+        ],
+      },
+    ],
+  }),
+  [getCorrectEndpoint(chatEndpoints.myChats)]: findMyChats({
+    routes: [
+      {
+        method: 'get',
+        description: 'Obter meus chats',
+        summary: 'Obter chats',
+        tags: [tag],
+        isPrivate: true,
+        responses: [
+          createResponseNeedLoginError(),
+          {
+            code: Status.OK,
+            content: {
+              ok: true,
+              data: {
+                chats: [
+                  {
+                    avatar: 'chat image',
+                    id: 'chat-uuid',
+                    messages: [],
+                    name: 'Other user full name',
+                    notification: 0,
+                    updatedAt: new Date().toISOString(),
+                  },
+                ],
+              },
+            },
+            contentSchemaPath: 'FindMyChatsResponse',
+            description: 'Meus chats',
           },
         ],
       },
@@ -103,6 +145,7 @@ const schemas: DocumentSchema = {
                 profileImage: { type: 'string' },
               },
             },
+            updatedAt: { type: 'string' },
             contactId: { type: 'string' },
             contactUnreadCount: { type: 'number' },
             createdAt: { type: 'string' },
@@ -127,6 +170,50 @@ const schemas: DocumentSchema = {
             },
             ownerId: { type: 'string' },
             ownerUnreadCount: { type: 'number' },
+          },
+        },
+      },
+    },
+  },
+  FindMyChatsResponse: {
+    type: 'object',
+    properties: {
+      chats: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            avatar: { type: 'string' },
+            id: { type: 'string' },
+            name: { type: 'string' },
+            notification: { type: 'number' },
+            updatedAt: { type: 'string' },
+            messages: {
+              type: 'array',
+              items: {
+                type: 'object',
+                properties: {
+                  chatId: { type: 'string' },
+                  content: { type: 'string' },
+                  createdAt: { type: 'string' },
+                  fileUrl: { type: 'string' },
+                  id: { type: 'string' },
+                  read: { type: 'boolean' },
+                  ownerId: { type: 'boolean' },
+                  owner: {
+                    type: 'object',
+                    properties: {
+                      firstName: { type: 'string' },
+                      lastName: { type: 'string' },
+                      email: { type: 'string' },
+                      profileImage: { type: 'string' },
+                      createdAt: { type: 'string' },
+                      id: { type: 'string' },
+                    },
+                  },
+                },
+              },
+            },
           },
         },
       },
