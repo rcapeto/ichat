@@ -8,3 +8,6 @@ Crie duas pastas na raiz do projeto para o download dos arquivos. As pastas deve
 - `UPLOADS_MESSAGES_ASSETS`
 
 Crie um arquivo na raiz chamado `tmp.txt` para os logs de erro da aplicação.
+
+### To do:
+- Criar rota para obter sessão pelo token.

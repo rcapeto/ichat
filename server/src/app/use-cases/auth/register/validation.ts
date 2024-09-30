@@ -16,5 +16,5 @@ export const validation = z
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: Messages.PASSWORD_MISS_MATCH,
-    path: ['password', 'confirmPassword'],
+    path: ['confirmPassword'],
   })

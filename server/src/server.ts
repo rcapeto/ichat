@@ -52,7 +52,7 @@ const httpServer = server.listen(SERVER_PORT, () => {
 
 const io = new SocketServer(httpServer, {
   cors: {
-    origin: 'http://localhost:3000',
+    origin: 'http://localhost:3001',
   },
 })
 

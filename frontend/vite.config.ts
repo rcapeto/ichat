@@ -1,8 +1,8 @@
-import react from "@vitejs/plugin-react"
-import path from "path"
-import { defineConfig } from "vite"
+import react from "@vitejs/plugin-react";
+import path from "path";
+import { defineConfig } from "vite";
 
-const port = 3000
+const port = 3001;
 
 export default defineConfig({
   plugins: [react()],
@@ -17,4 +17,4 @@ export default defineConfig({
   server: {
     port,
   },
-})
+});
