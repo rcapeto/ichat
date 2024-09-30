@@ -1,4 +1,4 @@
-import { login } from "@/services/http/requests/auth";
+import { login } from "@/services/http/requests/auth/requests";
 import {
   LoginRequest,
   LoginResponse,

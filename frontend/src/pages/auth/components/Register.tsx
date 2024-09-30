@@ -31,7 +31,7 @@ export function Register() {
 
   return (
     <div className="mt-3 flex flex-col gap-4">
-      <h3 className="text-2xl">Criar nova conta</h3>
+      <h3 className="text-2xl font-semibold">Criar nova conta</h3>
 
       <Form {...form}>
         <form

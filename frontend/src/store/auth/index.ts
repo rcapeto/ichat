@@ -1,8 +1,10 @@
 import { applicationConfig } from "@/config/application";
-import { createSlice } from "@reduxjs/toolkit";
+import { setApiHeader } from "@/services/http/api";
+import { UserSession } from "@/services/http/entities/app/auth";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 import { handleLogin } from "./requests";
-import { State } from "./types";
+import { AuthStoreState } from "./types";
 
 const fakeUser = {
   session: {
@@ -11,11 +13,12 @@ const fakeUser = {
     firstName: "Raphael",
     lastName: "Capeto",
     profileImage: "",
+    id: "any-id",
   },
   token: "my-token",
 };
 
-const initialState: State = {
+const initialState: AuthStoreState = {
   auth: {
     error: false,
     loading: false,
@@ -31,6 +34,11 @@ const AuthSlice = createSlice({
       state.auth.payload = null;
       Cookies.remove(applicationConfig.cookies.userToken);
     },
+    setNewSession(state, action: PayloadAction<UserSession>) {
+      if (state.auth.payload?.session) {
+        state.auth.payload.session = action.payload;
+      }
+    },
   },
   extraReducers(builder) {
     builder
@@ -41,6 +49,8 @@ const AuthSlice = createSlice({
       .addCase(handleLogin.fulfilled, (state, action) => {
         state.auth.loading = false;
         state.auth.payload = action.payload;
+
+        setApiHeader("Authorization", action.payload.token);
       })
       .addCase(handleLogin.rejected, (state) => {
         state.auth.loading = false;

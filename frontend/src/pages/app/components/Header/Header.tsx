@@ -2,6 +2,7 @@ import { useAppSelector } from "@/hooks/use-selector";
 import { joinWords } from "@/utils/join-words";
 import { AccountDropdown } from "./Dropdown";
 import { Logo } from "./Logo";
+import { ThemeSwitch } from "./ThemeSwitch";
 
 export function Header() {
   const { auth } = useAppSelector((state) => state.auth);
@@ -19,12 +20,16 @@ export function Header() {
     <header className="flex items-center justify-between px-10 py-2">
       <Logo />
 
-      <AccountDropdown
-        avatarFallback={avatarFallback}
-        email={email}
-        fullName={fullName}
-        profileImage={profileImage ?? ""}
-      />
+      <div className="flex items-center gap-7">
+        <ThemeSwitch />
+
+        <AccountDropdown
+          avatarFallback={avatarFallback}
+          email={email}
+          fullName={fullName}
+          profileImage={profileImage ?? ""}
+        />
+      </div>
     </header>
   );
 }

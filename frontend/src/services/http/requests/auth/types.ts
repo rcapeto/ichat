@@ -9,3 +9,13 @@ export type LoginResponse = {
   session: UserSession;
   token: string;
 };
+
+export type RegisterRequest = {
+  password: string;
+  confirmPassword: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+};
+
+export type RegisterResponse = void;

@@ -1,6 +1,17 @@
-import { ThemeContext } from "@/contexts/theme";
-import { useContext } from "react";
+import { themeActions } from "@/store/theme";
+import { useAppDispatch } from "./use-dispatch";
+import { useAppSelector } from "./use-selector";
 
 export function useTheme() {
-  return useContext(ThemeContext);
+  const dispatch = useAppDispatch();
+  const { theme } = useAppSelector((state) => state.theme);
+
+  function toggleTheme() {
+    dispatch(themeActions.toggleTheme());
+  }
+
+  return {
+    theme,
+    toggleTheme,
+  };
 }

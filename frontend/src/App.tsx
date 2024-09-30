@@ -1,13 +1,13 @@
 import { ComposeProviders } from "@/components/compose-providers";
-import { Toaster } from "@/components/ui/sonner";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { Toaster } from "@/components/ui/toaster";
 import { ModalProvider } from "@/contexts/modal";
 import { NetworkProvider } from "@/contexts/network";
-import { ThemeProvider } from "@/contexts/theme";
 import { ApplicationRoutes } from "@/routes";
 import store from "@/store";
 import { Provider } from "react-redux";
 
-const providers = [ModalProvider, NetworkProvider, ThemeProvider];
+const providers = [ModalProvider, NetworkProvider];
 
 export function App() {
   return (
@@ -17,6 +17,7 @@ export function App() {
           <ApplicationRoutes />
         </div>
         <Toaster />
+        <Sonner />
       </ComposeProviders>
     </Provider>
   );

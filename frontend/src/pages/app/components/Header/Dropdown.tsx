@@ -8,6 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAppDispatch } from "@/hooks/use-dispatch";
+import { ROUTES } from "@/routes";
 import { authActions } from "@/store/auth";
 import {
   ChatBubbleIcon,
@@ -36,9 +37,13 @@ export function AccountDropdown(props: AccountDropdownProps) {
   const dispatch = useAppDispatch();
 
   const items = [
-    { label: "Meu perfil", path: "", icon: PersonIcon },
-    { label: "Alterar senha", path: "", icon: LockClosedIcon },
-    { label: "Chat", path: "", icon: ChatBubbleIcon },
+    { label: "Meu perfil", path: ROUTES.MY_PROFILE, icon: PersonIcon },
+    {
+      label: "Alterar senha",
+      path: ROUTES.CHANGE_PASSWORD,
+      icon: LockClosedIcon,
+    },
+    { label: "Chat", path: ROUTES.HOME, icon: ChatBubbleIcon },
   ];
 
   function logout() {

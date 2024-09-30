@@ -25,7 +25,7 @@ export function Login() {
 
   return (
     <div className="mt-3 flex flex-col gap-4">
-      <h3 className="text-2xl">Entrar</h3>
+      <h3 className="text-2xl font-semibold">Entrar</h3>
 
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">

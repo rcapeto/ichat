@@ -1,9 +1,9 @@
 import { AppLayout } from "@/pages/app/components/Layout";
 
-export function ChatPage() {
+export function ChangePasswordPage() {
   return (
     <AppLayout>
-      <div>Chat</div>
+      <div>ChangePassword</div>
     </AppLayout>
   );
 }

@@ -4,4 +4,5 @@ export type UserSession = {
   email: string;
   profileImage: string | null;
   createdAt: string;
+  id: string;
 };

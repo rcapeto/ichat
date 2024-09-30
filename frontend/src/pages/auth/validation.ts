@@ -11,8 +11,6 @@ export const loginValidation = z.object({
   password: getStringSchema("senha"),
 });
 
-export type LoginFormValues = z.infer<typeof loginValidation>;
-
 export const registerValidation = z
   .object({
     email: getEmailSchema("email"),
@@ -26,4 +24,5 @@ export const registerValidation = z
     path: ["confirmPassword"], // path of error
   });
 
+export type LoginFormValues = z.infer<typeof loginValidation>;
 export type RegisterFormValues = z.infer<typeof registerValidation>;
