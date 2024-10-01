@@ -18,9 +18,9 @@ function ModalComponent(props: ModalProps, ref: ForwardedRef<ModalActions>) {
   const {
     title = "Modal Title",
     withCloseButton = true,
-    description = "Modal Description",
-    actionButtonText = "Continue",
-    cancelButtonText = "Cancel",
+    description = "",
+    actionButtonText = "",
+    cancelButtonText = "",
     onCancel,
     onActionClick,
     footerButtons = [],
@@ -40,12 +40,14 @@ function ModalComponent(props: ModalProps, ref: ForwardedRef<ModalActions>) {
     showModal: () => setOpen(true),
   }));
 
-  const showDefaultButtons = footerButtons.length === 0;
+  const renderFooter = Boolean(
+    actionButtonText || cancelButtonText || footerButtons.length > 0
+  );
 
   return (
     <AlertDialog open={open}>
       {withOverlay && <AlertDialogOverlay />}
-      <AlertDialogContent className="max-h-[600px] flex flex-col">
+      <AlertDialogContent className="flex flex-col max-h-[700px]">
         <AlertDialogHeader className="flex flex-col gap-4">
           <div className="flex items-center justify-between gap-2">
             <AlertDialogTitle>{title}</AlertDialogTitle>
@@ -56,29 +58,42 @@ function ModalComponent(props: ModalProps, ref: ForwardedRef<ModalActions>) {
               </Button>
             )}
           </div>
-          <AlertDialogDescription>{description}</AlertDialogDescription>
+          {description && (
+            <AlertDialogDescription>{description}</AlertDialogDescription>
+          )}
         </AlertDialogHeader>
 
-        <div className="overflow-auto">
-          {Component ? <Component {...passProps} /> : null}
-        </div>
+        {Component && (
+          <div className="flex-1 flex flex-col overflow-hidden">
+            <Component {...(passProps ?? {})} />
+          </div>
+        )}
 
-        <AlertDialogFooter className="mt-auto">
-          {showDefaultButtons && (
-            <>
-              <AlertDialogCancel onClick={onCancel ?? closeModal}>
-                {cancelButtonText}
-              </AlertDialogCancel>
-              <AlertDialogAction onClick={onActionClick}>
-                {actionButtonText}
-              </AlertDialogAction>
-            </>
-          )}
+        {}
 
-          {footerButtons.map((button, index) => (
-            <Button {...button} key={`footer-button-${index}`} />
-          ))}
-        </AlertDialogFooter>
+        {renderFooter && (
+          <AlertDialogFooter className="mt-top">
+            {(actionButtonText || cancelButtonText) && (
+              <>
+                {cancelButtonText && (
+                  <AlertDialogCancel onClick={onCancel ?? closeModal}>
+                    {cancelButtonText}
+                  </AlertDialogCancel>
+                )}
+
+                {actionButtonText && (
+                  <AlertDialogAction onClick={onActionClick}>
+                    {actionButtonText}
+                  </AlertDialogAction>
+                )}
+              </>
+            )}
+
+            {footerButtons.map((button, index) => (
+              <Button {...button} key={`footer-button-${index}`} />
+            ))}
+          </AlertDialogFooter>
+        )}
       </AlertDialogContent>
     </AlertDialog>
   );

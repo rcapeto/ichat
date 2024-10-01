@@ -1,9 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { handleUpdateUser } from "./requests";
+import { handleUpdateUser, handleUpdateUserPassword } from "./requests";
 import { UserStoreState } from "./types";
 
 const initialState: UserStoreState = {
   updateUser: {
+    error: false,
+    loading: false,
+    payload: null,
+  },
+  updateUserPassword: {
     error: false,
     loading: false,
     payload: null,
@@ -27,6 +32,19 @@ const UserSlice = createSlice({
       .addCase(handleUpdateUser.rejected, (state) => {
         state.updateUser.loading = false;
         state.updateUser.error = true;
+      })
+
+      .addCase(handleUpdateUserPassword.pending, (state) => {
+        state.updateUserPassword.loading = true;
+        state.updateUserPassword.error = false;
+      })
+      .addCase(handleUpdateUserPassword.fulfilled, (state, action) => {
+        state.updateUserPassword.loading = false;
+        state.updateUserPassword.payload = action.payload;
+      })
+      .addCase(handleUpdateUserPassword.rejected, (state) => {
+        state.updateUserPassword.loading = false;
+        state.updateUserPassword.error = true;
       });
   },
 });

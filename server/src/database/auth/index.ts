@@ -1,5 +1,7 @@
 import { AuthRepository } from '~/app/repositories/auth'
 import {
+  GetMySessionRequest,
+  GetMySessionResponse,
   LoginRequest,
   LoginResponse,
   RegisterRequest,
@@ -14,6 +16,14 @@ import { PasswordService } from '~/services/password'
 import { dispatchError, dispatchNotFoundError } from '~/utils/dispatchError'
 
 export class DatabaseAuthRepository implements AuthRepository {
+  async session(request: GetMySessionRequest): Promise<GetMySessionResponse> {
+    const { userId } = request
+    const user = await this.findUserById(userId)
+    const session = new UserEntity(user).getSession()
+
+    return { session }
+  }
+
   async register(request: RegisterRequest): Promise<RegisterResponse> {
     const { email, firstName, lastName, password } = request
 
@@ -71,6 +81,20 @@ export class DatabaseAuthRepository implements AuthRepository {
     const user = await client.user.findUnique({
       where: {
         email,
+      },
+    })
+
+    if (!user) {
+      throw dispatchNotFoundError(Messages.DOES_NOT_FOUND_USER)
+    }
+
+    return user
+  }
+
+  async findUserById(userId: string) {
+    const user = await client.user.findUnique({
+      where: {
+        id: userId,
       },
     })
 

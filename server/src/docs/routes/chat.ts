@@ -21,6 +21,7 @@ import { Messages } from '~/messages'
 import { endpoints } from '~/routes/endpoints'
 import { makeUserSession } from '~/tests/utils'
 import { dispatchError } from '~/utils/dispatchError'
+import { createApiSchema } from '../utils/createApiSchema'
 
 const chatEndpoints = endpoints.app.chat
 
@@ -120,6 +121,8 @@ const paths = {
                     name: 'Other user full name',
                     notification: 0,
                     updatedAt: new Date().toISOString(),
+                    createdAt: new Date().toISOString(),
+                    chatUserId: 'contact-uuid',
                   },
                 ],
               },
@@ -158,7 +161,10 @@ const paths = {
           ),
           {
             code: Status.OK,
-            content: {},
+            content: {
+              data: {},
+              ok: true,
+            },
             contentSchemaPath: 'FindMyChatsResponse',
             description: 'Meus chats',
           },
@@ -244,7 +250,7 @@ const schemas: DocumentSchema = {
       contactId: { type: 'string' },
     },
   },
-  CreateChatResponse: {
+  CreateChatResponse: createApiSchema({
     type: 'object',
     properties: {
       chat: {
@@ -292,8 +298,8 @@ const schemas: DocumentSchema = {
         },
       },
     },
-  },
-  FindMyChatsResponse: {
+  }),
+  FindMyChatsResponse: createApiSchema({
     type: 'object',
     properties: {
       chats: {
@@ -306,6 +312,8 @@ const schemas: DocumentSchema = {
             name: { type: 'string' },
             notification: { type: 'number' },
             updatedAt: { type: 'string' },
+            createdAt: { type: 'string' },
+            chatUserId: { type: 'string' },
             messages: {
               type: 'array',
               items: {
@@ -336,14 +344,14 @@ const schemas: DocumentSchema = {
         },
       },
     },
-  },
+  }),
   ReadAllChatMessagesRequest: {
     type: 'object',
     properties: {
       chatId: { type: 'string' },
     },
   },
-  FindManyChatMessagesResponse: {
+  FindManyChatMessagesResponse: createApiSchema({
     type: 'object',
     properties: {
       messages: {
@@ -376,7 +384,7 @@ const schemas: DocumentSchema = {
         type: 'boolean',
       },
     },
-  },
+  }),
 }
 
 export default { paths, schemas }

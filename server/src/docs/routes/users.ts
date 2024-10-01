@@ -18,6 +18,7 @@ import { Status } from '~/enums/status'
 import { Messages } from '~/messages'
 import { endpoints } from '~/routes/endpoints'
 import { dispatchError, dispatchNotFoundError } from '~/utils/dispatchError'
+import { createApiSchema } from '../utils/createApiSchema'
 
 const userEndpoints = endpoints.app.user
 
@@ -194,7 +195,7 @@ const paths = {
 }
 
 const schemas: DocumentSchema = {
-  FindManyUsersResponse: {
+  FindManyUsersResponse: createApiSchema({
     type: 'object',
     properties: {
       count: { type: 'number' },
@@ -214,7 +215,7 @@ const schemas: DocumentSchema = {
         },
       },
     },
-  },
+  }),
   UpdateRequest: {
     type: 'object',
     properties: {
@@ -224,7 +225,7 @@ const schemas: DocumentSchema = {
       profileImage: { type: 'string' },
     },
   },
-  UpdateResponse: {
+  UpdateResponse: createApiSchema({
     type: 'object',
     properties: {
       firstName: { type: 'string' },
@@ -233,7 +234,7 @@ const schemas: DocumentSchema = {
       profileImage: { type: 'string' },
       id: { type: 'string' },
     },
-  },
+  }),
   UpdateUserPasswordRequest: {
     type: 'object',
     properties: {
@@ -241,10 +242,10 @@ const schemas: DocumentSchema = {
       newPassword: { type: 'string' },
     },
   },
-  UpdateUserPasswordResponse: {
+  UpdateUserPasswordResponse: createApiSchema({
     type: 'object',
     properties: {},
-  },
+  }),
 }
 
 export default { paths, schemas }

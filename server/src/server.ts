@@ -59,17 +59,25 @@ const io = new SocketServer(httpServer, {
 io.on(SocketEvents.CONNECTION, (socket) => {
   socketInstance.setSocket(socket)
 
-  io.on(SocketEvents.USER_ONLINE, (data: UserOnlineSocketEventParams) => {
+  socket.on(SocketEvents.USER_ONLINE, (data: UserOnlineSocketEventParams) => {
     socketInstance.setOnlineUser({
       socketId: socket.id,
       userId: data.userId,
     })
+
+    socket.broadcast.emit(SocketEvents.UPDATE_ONLINE_USERS, {
+      onlineUsers: socketInstance.getUsers(),
+    })
   })
 
-  io.on(
+  socket.on(
     SocketEvents.USER_DISCONNECT,
     (data: UserDisconnectSocketEventParams) => {
       socketInstance.removeOnlineUserById(data.userId)
+
+      socket.broadcast.emit(SocketEvents.UPDATE_ONLINE_USERS, {
+        onlineUsers: socketInstance.getUsers(),
+      })
     },
   )
 })

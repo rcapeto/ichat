@@ -17,7 +17,7 @@ export function Header() {
   const avatarFallback = `${firstName[0]}${lastName[0]}`;
 
   return (
-    <header className="flex items-center justify-between px-10 py-2">
+    <header className="flex items-center justify-between px-8 py-2 pb-4 border-b border-collapse">
       <Logo />
 
       <div className="flex items-center gap-7">

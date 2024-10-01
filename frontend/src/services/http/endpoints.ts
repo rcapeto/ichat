@@ -1,8 +1,8 @@
 const auth = {
-  login: "/auth/login",
-  register: "/auth/register",
-  session: "/session",
-};
+  login: '/auth/login',
+  register: '/auth/register',
+  session: '/auth/session',
+}
 
 const appRoutes = {
   logs: "/logs",

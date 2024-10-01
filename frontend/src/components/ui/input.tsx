@@ -2,7 +2,11 @@ import * as React from "react";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons";
+import {
+  EyeClosedIcon,
+  EyeOpenIcon,
+  MagnifyingGlassIcon,
+} from "@radix-ui/react-icons";
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {}
@@ -36,7 +40,7 @@ const InputPassword = React.forwardRef<HTMLInputElement, InputProps>(
         <Input
           {...props}
           type={showPassword ? "text" : "password"}
-          className={className}
+          className={cn(className, "pr-10")}
           ref={ref}
         />
 
@@ -58,7 +62,33 @@ const InputPassword = React.forwardRef<HTMLInputElement, InputProps>(
   }
 );
 
-Input.displayName = "Input";
-InputPassword.displayName = "InputPassworde";
+const InputSearch = React.forwardRef<HTMLInputElement, InputProps>(
+  ({ className, ...props }, ref) => {
+    return (
+      <div className="w-full relative">
+        <Input
+          {...props}
+          type="search"
+          className={cn(className, "pl-10")}
+          ref={ref}
+        />
 
-export { Input, InputPassword };
+        <Button
+          size="icon"
+          variant="ghost"
+          className="absolute top-0 left-0 z-10"
+          type="button"
+          disabled
+        >
+          <MagnifyingGlassIcon />
+        </Button>
+      </div>
+    );
+  }
+);
+
+Input.displayName = "Input";
+InputPassword.displayName = "InputPassword";
+InputSearch.displayName = "InputSearch";
+
+export { Input, InputPassword, InputSearch };

@@ -1,13 +1,25 @@
-import { Header } from "@/pages/app/components/Header";
+import { cn } from "@/lib/utils";
 import { PropsWithChildren } from "react";
+import { Header } from "./Header";
 
-export function AppLayout(props: PropsWithChildren) {
+type LayoutProps = {
+  className?: string;
+};
+
+export function AppLayout(props: PropsWithChildren<LayoutProps>) {
   return (
-    <div className="w-full h-full flex items-center justify-center">
-      <div className="bg-gray-100 dark:bg-zinc-900 w-full h-full max-w-screen-lg max-h-[700px] rounded-lg shadow-2xl flex flex-col gap-3 max-sm:max-w-full max-sm:max-h-full">
+    <div className="w-screen h-screen bg-background flex items-center justify-center">
+      <div className="flex-1 w-full h-full shadow-2xl max-w-5xl max-h-[700px] rounded-lg flex flex-col  bg-gray-100 dark:bg-zinc-900 max-sm:max-w-full max-sm:max-h-full">
         <Header />
 
-        <div className="px-6 flex flex-col flex-1">{props.children}</div>
+        <div
+          className={cn(
+            "flex-1 flex flex-col overflow-hidden p-6",
+            props.className
+          )}
+        >
+          {props.children}
+        </div>
       </div>
     </div>
   );

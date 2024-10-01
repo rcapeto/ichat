@@ -6,16 +6,28 @@ import Cookies from "js-cookie";
 import { handleLogin } from "./requests";
 import { AuthStoreState } from "./types";
 
-const fakeUser = {
+export const fakeUser = {
   session: {
     createdAt: new Date().toISOString(),
     email: "raphael.capeto@ichat.com",
     firstName: "Raphael",
     lastName: "Capeto",
     profileImage: "",
-    id: "any-id",
+    id: "my-id",
   },
   token: "my-token",
+};
+
+export const contactUser = {
+  session: {
+    createdAt: new Date().toISOString(),
+    email: "john.doe@ichat.com",
+    firstName: "John",
+    lastName: "Doe",
+    profileImage: "",
+    id: "contact-id",
+  },
+  token: "contact-token",
 };
 
 const initialState: AuthStoreState = {

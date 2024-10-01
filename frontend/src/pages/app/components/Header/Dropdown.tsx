@@ -7,6 +7,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { UserAvatar } from "@/components/user-avatar";
+import { useChat } from "@/hooks/use-chat";
 import { useAppDispatch } from "@/hooks/use-dispatch";
 import { ROUTES } from "@/routes";
 import { authActions } from "@/store/auth";
@@ -16,7 +18,6 @@ import {
   PersonIcon,
 } from "@radix-ui/react-icons";
 import { Link } from "react-router-dom";
-import { UserAvatar } from "./UserAvatar";
 import { UserInfo } from "./UserInfo";
 
 type AccountDropdownProps = {
@@ -34,6 +35,7 @@ export function AccountDropdown(props: AccountDropdownProps) {
     profileImage = "",
   } = props;
 
+  const { disconnectChat } = useChat();
   const dispatch = useAppDispatch();
 
   const items = [
@@ -48,6 +50,7 @@ export function AccountDropdown(props: AccountDropdownProps) {
 
   function logout() {
     dispatch(authActions.logout());
+    disconnectChat();
   }
 
   return (
@@ -57,7 +60,7 @@ export function AccountDropdown(props: AccountDropdownProps) {
           <UserAvatar
             avatarFallback={avatarFallback}
             fullName={fullName}
-            profileImage={profileImage ?? ""}
+            avatarImage={profileImage ?? ""}
           />
 
           <UserInfo email={email} fullName={fullName} />
@@ -75,8 +78,10 @@ export function AccountDropdown(props: AccountDropdownProps) {
         <DropdownMenuGroup>
           {items.map((item, index) => (
             <DropdownMenuItem key={index.toString()} className="gap-2">
-              <item.icon />
-              <Link to={item.path}>{item.label}</Link>
+              <Link to={item.path} className="flex items-center gap-2 w-full">
+                <item.icon />
+                {item.label}
+              </Link>
             </DropdownMenuItem>
           ))}
         </DropdownMenuGroup>

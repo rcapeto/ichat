@@ -1,4 +1,3 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -9,6 +8,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { UserAvatar } from "@/components/user-avatar";
 import { useAppSelector } from "@/hooks/use-selector";
 import { cn } from "@/lib/utils";
 import { AppLayout } from "@/pages/app/components/Layout";
@@ -122,16 +122,14 @@ export function ProfilePage() {
 
               <div className="flex flex-col gap-2">
                 <div className="relative">
-                  <Avatar
-                    onClick={openFilePicker}
-                    className="bg-violet-600 size-28 cursor-pointer"
+                  <UserAvatar
+                    className="size-28 cursor-pointer"
+                    avatarImage={imagePreview}
+                    fullName={fullName}
+                    avatarFallback={avatarFallback}
                     title={imageFile?.name}
-                  >
-                    <AvatarImage src={imagePreview} alt={fullName} />
-                    <AvatarFallback className="bg-violet-600 text-white size-28">
-                      {avatarFallback}
-                    </AvatarFallback>
-                  </Avatar>
+                    onClick={openFilePicker}
+                  />
 
                   <Button
                     type="button"

@@ -18,3 +18,15 @@ export type RegisterRequest = {
 }
 
 export type RegisterResponse = void
+
+export type GetMySessionRequest = {
+  userId: string
+}
+
+export type GetMySessionResponse = {
+  session: UserSession
+}
+
+export type GetOnlineSocketUsersResponse = {
+  onlineUsers: string[]
+}

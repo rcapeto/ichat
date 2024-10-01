@@ -1,9 +1,12 @@
-import { AppLayout } from "@/pages/app/components/Layout";
+import { AppLayout } from "../components/Layout";
+import { ChatContent } from "./ChatContent";
+import { ChatSidebar } from "./Sidebar";
 
 export function ChatPage() {
   return (
-    <AppLayout>
-      <div>Chat</div>
+    <AppLayout className="flex-row p-0">
+      <ChatSidebar />
+      <ChatContent />
     </AppLayout>
   );
 }

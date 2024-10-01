@@ -10,3 +10,10 @@ export type UpdateProfileRequest = {
 export type UpdateProfileResponse = {
   user: UserSession;
 };
+
+export type UpdatePasswordRequest = {
+  password: string;
+  newPassword: string;
+};
+
+export type UpdatePasswordResponse = void;
