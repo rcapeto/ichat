@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { UserAvatar } from "@/components/user-avatar";
-import { useAppSelector } from "@/hooks/use-selector";
+import { useAccount } from "@/hooks/use-account";
 import { cn } from "@/lib/utils";
 import { AppLayout } from "@/pages/app/components/Layout";
 import { joinWords } from "@/utils/join-words";
@@ -27,13 +27,13 @@ const ACCEPTED_IMAGE_TYPES = [
 ];
 
 export function ProfilePage() {
-  const { auth } = useAppSelector((state) => state.auth);
+  const { session } = useAccount();
   const {
     email = "",
     firstName = "",
     lastName = "",
     profileImage = "",
-  } = auth.payload?.session ?? {};
+  } = session ?? {};
 
   const inputFileRef = useRef<HTMLInputElement | null>(null);
 

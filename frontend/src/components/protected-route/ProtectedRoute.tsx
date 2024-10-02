@@ -4,7 +4,7 @@ import { ProtectedRouteProps } from "./types";
 
 import { Loading } from "@/components/loading";
 import { applicationConfig } from "@/config/application";
-import { useAppSelector } from "@/hooks/use-selector";
+import { useAccount } from "@/hooks/use-account";
 import { ROUTES, authRoutes } from "@/routes";
 
 function isAuth(route: string) {
@@ -12,13 +12,10 @@ function isAuth(route: string) {
 }
 
 export function ProtectedRoute({ appRoute }: ProtectedRouteProps) {
-  const { auth } = useAppSelector((state) => state.auth);
+  const { isError, isLoading, session } = useAccount();
   const { pathname } = useLocation();
 
-  const isLoading = auth.loading;
-  const isError = auth.error;
-
-  const isLogged = Boolean(auth.payload?.session);
+  const isLogged = Boolean(session);
   const isAuthenticated =
     isLogged || Cookie.get(applicationConfig.cookies.userToken);
   const authRoute = isAuth(pathname);

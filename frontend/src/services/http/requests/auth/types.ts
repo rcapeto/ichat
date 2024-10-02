@@ -19,3 +19,11 @@ export type RegisterRequest = {
 };
 
 export type RegisterResponse = void;
+
+export type SessionRequest = {
+  token: string;
+};
+
+export type SessionResponse = {
+  session: UserSession;
+};

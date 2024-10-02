@@ -1,4 +1,5 @@
 import { AddNewUsers } from "@/components/add-new-users";
+import { useAccount } from "@/hooks/use-account";
 import { useAppDispatch } from "@/hooks/use-dispatch";
 import { useModal } from "@/hooks/use-modal";
 import { useAppSelector } from "@/hooks/use-selector";
@@ -21,10 +22,8 @@ export const ChatContext = createContext({} as ChatContextValues);
 
 export function ChatProvider(props: PropsWithChildren) {
   const dispatch = useAppDispatch();
-  const { auth, chat } = useAppSelector((state) => ({
-    ...state.auth,
-    chat: state.chat,
-  }));
+  const { session } = useAccount();
+  const chat = useAppSelector((state) => state.chat);
   const { closeModal, showModal } = useModal();
 
   function addNewChat(params: InsertNewChat) {
@@ -45,13 +44,13 @@ export function ChatProvider(props: PropsWithChildren) {
 
   function addSocketListeners() {
     socket.emit(SocketEvents.USER_ONLINE, {
-      userId: auth.payload?.session.id ?? "",
+      userId: session?.id ?? "",
     } as UserOnlineSocketEventParams);
   }
 
   function disconnectChat() {
     socket.emit(SocketEvents.USER_DISCONNECT, {
-      userId: auth.payload?.session.id ?? "",
+      userId: session?.id ?? "",
     } as UserDisconnectSocketEventParams);
 
     socket.disconnect();
@@ -80,7 +79,7 @@ export function ChatProvider(props: PropsWithChildren) {
         updateUnreadMessages,
         disconnectChat,
         showUsersModal,
-        userId: auth.payload?.session.id ?? "",
+        userId: session?.id ?? "",
         ...chat,
       }}
     >

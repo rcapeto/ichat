@@ -5,6 +5,8 @@ import {
   LoginResponse,
   RegisterRequest,
   RegisterResponse,
+  SessionRequest,
+  SessionResponse,
 } from "./types";
 
 const endpoint = endpoints.authentication;
@@ -22,5 +24,15 @@ export async function register(payload: RegisterRequest) {
     method: "post",
     endpoint: endpoint.register,
     body: payload,
+  });
+}
+
+export async function session(params: SessionRequest) {
+  return await createApiRequest<SessionRequest, SessionResponse>({
+    method: "get",
+    endpoint: endpoint.session,
+    requestConfig: {
+      params,
+    },
   });
 }

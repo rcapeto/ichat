@@ -16,12 +16,9 @@ import {
   InsertNewChat,
   InsertNewMessage,
   SelectChat,
+  UpdateOnlineUsers,
   UpdateReadMessages,
 } from "./types";
-
-// insertNewMessage
-// setSelectedChat
-// updateReadMessages
 
 const initialState: ChatStoreState = {
   requestChatMessages: {
@@ -89,6 +86,28 @@ const initialState: ChatStoreState = {
           ownerId: contactUser.session.id,
           read: false,
         },
+        {
+          chatId: "chat-id-1",
+          fileUrl: "",
+          createdAt: new Date().toISOString(),
+          content:
+            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus esse suscipit cum eaque perspiciatis dolor vel magni aperiam iusto repudiandae aspernatur natus pariatur cumque eum soluta aut, aliquam, amet incidunt!",
+          owner: contactUser.session,
+          id: "message-4-id",
+          ownerId: contactUser.session.id,
+          read: false,
+        },
+        {
+          chatId: "chat-id-1",
+          content: "Oceano",
+          createdAt: new Date().toISOString(),
+          fileUrl:
+            "https://images.unsplash.com/photo-1725161834059-9741b5400d0f?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+          owner: contactUser.session,
+          id: "message-5-id",
+          ownerId: contactUser.session.id,
+          read: false,
+        },
       ],
       name: joinWords(
         contactUser.session.firstName,
@@ -97,11 +116,12 @@ const initialState: ChatStoreState = {
       notification: 2,
       updatedAt: new Date().toISOString(),
       chatUserId: contactUser.session.id,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     },
   ],
   totalUnreadMessages: 0,
   selectedChat: null,
+  onlineUsers: [contactUser.session.id],
 };
 
 const ChatSlice = createSlice({
@@ -159,6 +179,9 @@ const ChatSlice = createSlice({
 
       state.chats = orderChats(chats);
       state.totalUnreadMessages = getTotalUnreadMessages(chats);
+    },
+    updateOnlineUsers(state, action: PayloadAction<UpdateOnlineUsers>) {
+      state.onlineUsers = action.payload.onlineUsers;
     },
   },
   extraReducers(builder) {

@@ -1,17 +1,17 @@
-import { useAppSelector } from "@/hooks/use-selector";
+import { useAccount } from "@/hooks/use-account";
 import { joinWords } from "@/utils/join-words";
 import { AccountDropdown } from "./Dropdown";
 import { Logo } from "./Logo";
 import { ThemeSwitch } from "./ThemeSwitch";
 
 export function Header() {
-  const { auth } = useAppSelector((state) => state.auth);
+  const { session } = useAccount();
   const {
     firstName = "",
     lastName = "",
     profileImage = "",
     email = "",
-  } = auth.payload?.session ?? {};
+  } = session ?? {};
 
   const fullName = joinWords(firstName, lastName);
   const avatarFallback = `${firstName[0]}${lastName[0]}`;

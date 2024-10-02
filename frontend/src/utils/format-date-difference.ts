@@ -1,10 +1,32 @@
 import dayjs from "dayjs";
-import ptBR from "dayjs/locale/pt-br";
 import duration from "dayjs/plugin/duration";
 import relativeTime from "dayjs/plugin/relativeTime";
 import updateLocale from "dayjs/plugin/updateLocale";
 
-dayjs.locale(ptBR);
+dayjs.extend(duration);
+dayjs.extend(relativeTime);
+dayjs.extend(updateLocale);
+
+dayjs.updateLocale("pt-br", {
+  relativeTime: {
+    future: "em %s",
+    past: "%s atrás",
+    s: "há poucos segundos",
+    ss: "%d segundos",
+    m: "1 min",
+    mm: "%d min",
+    h: "1 h",
+    hh: "%d h",
+    d: "1 d",
+    dd: "%d d",
+    w: "1 w",
+    ww: "%d s",
+    M: "1 m",
+    MM: "%d m",
+    y: "1 y",
+    yy: "%d a",
+  },
+});
 
 export function getDiffByDate(date: string) {
   const now = dayjs();
@@ -34,28 +56,3 @@ export function formatDateDifference(date: string): string {
 
   return dayjs(date).fromNow(true);
 }
-
-dayjs.extend(duration);
-dayjs.extend(relativeTime);
-dayjs.extend(updateLocale);
-
-dayjs.updateLocale("pt-br", {
-  relativeTime: {
-    future: "em %s",
-    past: "%s atrás",
-    s: "há poucos segundos",
-    ss: "%d segundos",
-    m: "1 min",
-    mm: "%d min",
-    h: "1 h",
-    hh: "%d h",
-    d: "1 d",
-    dd: "%d d",
-    w: "1 w",
-    ww: "%d s",
-    M: "1 m",
-    MM: "%d m",
-    y: "1 y",
-    yy: "%d a",
-  },
-});
