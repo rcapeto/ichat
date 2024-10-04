@@ -1,8 +1,11 @@
 import { FlatList } from "@/components/flat-list";
 import { useChat } from "@/hooks/use-chat";
 import { useAppDispatch } from "@/hooks/use-dispatch";
-import { handleGetMessagesChat } from "@/store/app/chat/requests";
-import { useState } from "react";
+import {
+  handleGetMessagesChat,
+  handleReadChatMessages,
+} from "@/store/app/chat/requests";
+import { useEffect, useState } from "react";
 import { AddNewUsers } from "../add-new-users";
 import { EmptyState } from "./EmptyState";
 import { Header } from "./Header";
@@ -14,6 +17,14 @@ export function ChatContent() {
 
   const { selectedChat, addNewMessages, isVisibleAddUserPage } = useChat();
   const dispatch = useAppDispatch();
+
+  async function handleReadMessages() {
+    if (!selectedChat) {
+      return;
+    }
+
+    await dispatch(handleReadChatMessages({ chatId: selectedChat.id }));
+  }
 
   async function getOldMessage() {
     const lastMessage = messages[messages.length - 1];
@@ -39,6 +50,10 @@ export function ChatContent() {
       }
     }
   }
+
+  useEffect(() => {
+    handleReadMessages();
+  }, [selectedChat?.id, selectedChat?.messages.length]);
 
   if (isVisibleAddUserPage) {
     return <AddNewUsers />;

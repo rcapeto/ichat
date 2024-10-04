@@ -78,29 +78,31 @@ export function Message(props: MessageProps) {
             </div>
           </div>
 
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div
-                  className={cn(
-                    "size-5 rounded-full flex items-center justify-center absolute -right-2 -bottom-2",
-                    !isMyMessage ? "bg-zinc-200" : "bg-primary",
-                    !isMyMessage ? "dark:bg-zinc-800" : ""
-                  )}
-                >
-                  <ReadIcon
-                    className={
-                      isMyMessage ? "text-primary-foreground" : "text-primary"
-                    }
-                  />
-                </div>
-              </TooltipTrigger>
+          {isMyMessage && (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div
+                    className={cn(
+                      "size-5 rounded-full flex items-center justify-center absolute -right-2 -bottom-2",
+                      !isMyMessage ? "bg-zinc-200" : "bg-primary",
+                      !isMyMessage ? "dark:bg-zinc-800" : ""
+                    )}
+                  >
+                    <ReadIcon
+                      className={
+                        isMyMessage ? "text-primary-foreground" : "text-primary"
+                      }
+                    />
+                  </div>
+                </TooltipTrigger>
 
-              <TooltipContent>
-                {message.read ? "Lido" : "Não lido"}
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+                <TooltipContent>
+                  {message.read ? "Lido" : "Não lido"}
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
 
           {!isMyMessage && (
             <div className="size-3 rotate-[300deg] absolute bottom-1.5 -left-0.5 shape bg-zinc-200 dark:bg-zinc-800" />

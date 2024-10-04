@@ -17,7 +17,7 @@ import { UserRowProps } from "./types";
 export function UserRow(props: UserRowProps) {
   const { user } = props;
   const dispatch = useAppDispatch();
-  const { toggleShowAddUserPage } = useChat();
+  const { hideAddUserPage } = useChat();
   const { showToastError } = useAlert();
 
   const [message, setMessage] = useState("");
@@ -67,7 +67,7 @@ export function UserRow(props: UserRowProps) {
         throw new Error(response.error.message);
       }
 
-      toggleShowAddUserPage();
+      hideAddUserPage();
     } catch (err) {
       const errorMessage =
         (err as Error)?.message || Messages.DEFAULT_ERROR_MESSAGE;

@@ -6,10 +6,17 @@ import { ChatRow } from "@/pages/app/chat/components/chat-row";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 import { ChatRowLoading } from "../components/chat-row/ChatRowLoading";
-import { EmptyState } from "./EmptyState";
+import { EmptyState } from "./empty-state";
+
 export function ChatSidebar() {
   const [search, setSearch] = useState("");
-  const { chats, requestChats, toggleShowAddUserPage } = useChat();
+
+  const { chats, requestChats, showAddUserPage, isVisibleAddUserPage } =
+    useChat();
+
+  function onCleanSearchInput() {
+    setSearch("");
+  }
 
   const filteredChats = chats.filter((chat) => {
     const chatNameLowercase = chat.name.toLowerCase();
@@ -23,19 +30,26 @@ export function ChatSidebar() {
   return (
     <FlatList
       data={filteredChats}
-      keyExtractor={(item) => item.id}
+      keyExtractor={(item) => `${item.id}-${item.messages.length}`}
       renderItem={({ item: chat }) => <ChatRow chat={chat} key={chat.id} />}
       containerClassName="max-w-[250px] border-r border-collapse"
       isLoading={isLoading}
       LoadingComponent={() => <ChatRowLoading />}
       loadingQuantityItems={5}
-      EmptyComponent={<EmptyState />}
+      EmptyComponent={<EmptyState onCleanSearchInput={onCleanSearchInput} />}
       HeaderComponent={
         <div className="flex flex-col gap-2 p-2">
           <div className="flex items-center justify-between">
             <h4 className="text-md font-semibold">Conversas</h4>
 
-            <Button size="icon" variant="ghost" onClick={toggleShowAddUserPage}>
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={showAddUserPage}
+              style={{
+                visibility: isVisibleAddUserPage ? "hidden" : "visible",
+              }}
+            >
               <PlusIcon />
             </Button>
           </div>

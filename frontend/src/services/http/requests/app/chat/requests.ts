@@ -67,7 +67,7 @@ export async function getMyChats() {
 }
 
 export async function readChatMessages(payload: ReadChatMessagesRequest) {
-  const endpoint = endpointChat.myChats;
+  const endpoint = endpointChat.readMessages;
 
   return await createApiRequest<
     ReadChatMessagesRequest,

@@ -44,8 +44,12 @@ export function ChatProvider(props: PropsWithChildren) {
 
   const chat = useAppSelector((state) => state.chat);
 
-  function toggleShowAddUserPage() {
-    setIsVisibleAddUserPage((prevState) => !prevState);
+  function showAddUserPage() {
+    setIsVisibleAddUserPage(true);
+  }
+
+  function hideAddUserPage() {
+    setIsVisibleAddUserPage(false);
   }
 
   function addNewChat(params: InsertNewChat) {
@@ -126,7 +130,12 @@ export function ChatProvider(props: PropsWithChildren) {
     socket.on(
       SocketEvents.USER_READ_MESSAGE,
       (data: ReadChatMessagesSocketEventResponse) => {
-        console.log("@@@ read message", { data, userId: session?.id });
+        console.log("@@ update user read", data);
+
+        updateUnreadMessages({
+          chatId: data.chatId,
+          userReadMessagesId: data.userReadMessagesId,
+        });
       }
     );
   }
@@ -150,9 +159,7 @@ export function ChatProvider(props: PropsWithChildren) {
   }
 
   async function requestNotificationAuthorization() {
-    const permission = await Notification.requestPermission();
-    console.log("isGranted", permission === "granted");
-    return permission;
+    return await Notification.requestPermission();
   }
 
   useEffect(() => {
@@ -172,8 +179,9 @@ export function ChatProvider(props: PropsWithChildren) {
         updateUnreadMessages,
         disconnectChat,
         userId: session?.id ?? "",
-        toggleShowAddUserPage,
         isVisibleAddUserPage,
+        showAddUserPage,
+        hideAddUserPage,
         ...chat,
       }}
     >

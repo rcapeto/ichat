@@ -7,7 +7,7 @@ import { useAppDispatch } from "@/hooks/use-dispatch";
 import { Messages } from "@/messages";
 import { UserSession } from "@/services/http/entities/app/auth";
 import { handleGetUsersChat } from "@/store/app/chat/requests";
-import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
+import { ChevronLeftIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { ChangeEvent, useEffect, useState } from "react";
 import { UserRow } from "./UserRow";
 
@@ -18,7 +18,7 @@ export function AddNewUsers() {
 
   const [users, setUsers] = useState<UserSession[]>([]);
   const { showSonnerError } = useAlert();
-  const { requestUsers } = useChat();
+  const { requestUsers, hideAddUserPage } = useChat();
 
   const dispatch = useAppDispatch();
 
@@ -88,15 +88,25 @@ export function AddNewUsers() {
       scrollClassName="gap-3 px-6 pb-10"
       isLoading={requestUsers.loading}
       HeaderComponent={
-        <div className="flex items-center gap-2 p-6">
-          <InputSearch
-            placeholder="Procure sua conversa..."
-            value={search}
-            onChange={changeInputValue}
-          />
-          <Button type="button" size="icon" onClick={onClickSearchButton}>
-            <MagnifyingGlassIcon />
-          </Button>
+        <div className="flex flex-col gap-5 p-4">
+          <div className="flex items-center justify-start gap-3">
+            <Button size="icon" title="Voltar" onClick={hideAddUserPage}>
+              <ChevronLeftIcon />
+            </Button>
+
+            <h5 className="text-xl font-semibold">Adicionar novo chat</h5>
+          </div>
+
+          <div className="flex items-center gap-2 px-6">
+            <InputSearch
+              placeholder="Procure sua conversa..."
+              value={search}
+              onChange={changeInputValue}
+            />
+            <Button type="button" size="icon" onClick={onClickSearchButton}>
+              <MagnifyingGlassIcon />
+            </Button>
+          </div>
         </div>
       }
       EmptyComponent={

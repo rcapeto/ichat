@@ -13,6 +13,7 @@ export type ChatContextValues = ChatStoreState & {
   updateUnreadMessages: (params: UpdateReadMessages) => void;
   disconnectChat: () => void;
   userId: string;
-  toggleShowAddUserPage: () => void,
-  isVisibleAddUserPage: boolean,
+  showAddUserPage: () => void;
+  hideAddUserPage: () => void;
+  isVisibleAddUserPage: boolean;
 };

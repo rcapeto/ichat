@@ -1,7 +1,11 @@
 import { createController } from '~/app/controllers/createController'
 import { ReadAllChatMessagesUseCase } from '~/app/use-cases/chat/readAllMessages'
 import { Status } from '~/enums/status'
-import { io, SocketEvents, socketInstance } from '~/services/socket'
+import {
+  io,
+  ReadChatMessagesSocketEventResponse,
+  SocketEvents,
+} from '~/services/socket'
 
 const loggerAction = 'ReadAllChatMessages'
 
@@ -17,15 +21,10 @@ export const ReadAllChatMessagesController =
         ...request.body,
       })
 
-      const ownerSocketId = socketInstance.getSocketIdByUserId(ownerId)
-      const contactSocketId = socketInstance.getSocketIdByUserId(contactId)
-
-      io
-        ?.to([ownerSocketId, contactSocketId])
-        .emit(SocketEvents.USER_READ_MESSAGE, {
-          chatId,
-          userReadMessagesId: request.userId,
-        })
+      io.to([ownerId, contactId]).emit(SocketEvents.USER_READ_MESSAGE, {
+        chatId,
+        userReadMessagesId: request.userId,
+      } as ReadChatMessagesSocketEventResponse)
 
       return {}
     },

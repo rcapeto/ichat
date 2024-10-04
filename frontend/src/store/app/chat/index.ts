@@ -71,7 +71,7 @@ const ChatSlice = createSlice({
 
       chats.push(action.payload.chat);
 
-      state.selectedChat = action.payload.chat
+      state.selectedChat = action.payload.chat;
       state.chats = orderChats(chats);
       state.totalUnreadMessages = getTotalUnreadMessages(chats);
     },
@@ -96,8 +96,8 @@ const ChatSlice = createSlice({
           chat.messages.unshift(...messages);
         }
 
-        if(state.selectedChat?.id === chat.id) {
-          state.selectedChat = chat
+        if (state.selectedChat?.id === chat.id) {
+          state.selectedChat = chat;
         }
       }
 
@@ -121,12 +121,26 @@ const ChatSlice = createSlice({
       const { chatId, userReadMessagesId } = action.payload;
       const chats = [...state.chats];
       const chat = chats.find((chat) => chat.id === chatId);
+      const isMeTheReader =
+        action.payload.userReadMessagesId === state.loggedUserId;
 
       if (chat) {
-        chat.messages.map((message) => ({
-          ...message,
-          read: message.ownerId !== userReadMessagesId ? true : message.read,
-        }));
+        chat.messages = chat.messages.map((message) => {
+          const requestedIsOwner = message.ownerId === userReadMessagesId;
+
+          return {
+            ...message,
+            read: requestedIsOwner ? message.read : true,
+          };
+        });
+
+        if (isMeTheReader) {
+          chat.notification = 0;
+        }
+
+        if (state.selectedChat && state.selectedChat.id === chatId) {
+          state.selectedChat = chat;
+        }
       }
 
       state.chats = orderChats(chats);

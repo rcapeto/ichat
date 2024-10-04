@@ -7,7 +7,6 @@ export function useWindowFocus() {
 
   function changeFocusValue(type: WindowEvent) {
     return () => {
-      console.log("event", { type, isFocused: type === "focus" });
       setIsFocused(type === "focus");
     };
   }
