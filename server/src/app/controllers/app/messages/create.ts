@@ -1,10 +1,8 @@
 import { createController } from '~/app/controllers/createController'
 import { CreateMessageUseCase } from '~/app/use-cases/messages/create'
 import { Status } from '~/enums/status'
-import { SocketEvents } from '~/services/socket'
-import { socketInstance } from '~/services/socket/socket-instance'
+import { SocketEvents, io } from '~/services/socket'
 
-const socket = socketInstance.getSocket()
 const loggerAction = 'CreateMessage'
 
 export const CreateMessageController = createController<CreateMessageUseCase>(
@@ -22,10 +20,10 @@ export const CreateMessageController = createController<CreateMessageUseCase>(
       file,
     })
 
-    const userSocketId = socketInstance.getSocketIdByUserId(userId)
-    const contactSocketId = socketInstance.getSocketIdByUserId(data.contactId)
-
-    socket?.to([userSocketId, contactSocketId]).emit(SocketEvents.MESSAGE, data)
+    io.to([data.contactId, data.message.ownerId]).emit(
+      SocketEvents.MESSAGE,
+      data,
+    )
 
     return data
   },

@@ -6,40 +6,19 @@ import Cookies from "js-cookie";
 import { handleLogin, handleRegister, handleSession } from "./requests";
 import { AuthStoreState } from "./types";
 
-export const fakeUser = {
-  session: {
-    createdAt: new Date().toISOString(),
-    email: "raphael.capeto@ichat.com",
-    firstName: "Raphael",
-    lastName: "Capeto",
-    profileImage: "",
-    id: "my-id",
-  },
-  token: "my-token",
-};
-
-export const contactUser = {
-  session: {
-    createdAt: new Date().toISOString(),
-    email: "john.doe@ichat.com",
-    firstName: "John",
-    lastName: "Doe",
-    profileImage: "",
-    id: "contact-id",
-  },
-  token: "contact-token",
-};
+const headerAuthorizationKey = applicationConfig.api.headers.authorization;
+const cookieTokenKey = applicationConfig.cookies.userToken;
 
 const initialState: AuthStoreState = {
   auth: {
     error: false,
     loading: false,
-    payload: fakeUser,
+    payload: null,
   },
   session: {
     error: false,
     loading: false,
-    payload: fakeUser.session,
+    payload: null,
   },
   register: {
     error: false,
@@ -54,7 +33,10 @@ const AuthSlice = createSlice({
   reducers: {
     logout(state) {
       state.auth.payload = null;
-      Cookies.remove(applicationConfig.cookies.userToken);
+      state.session.payload = null;
+
+      Cookies.remove(cookieTokenKey);
+      setApiHeader(headerAuthorizationKey, "");
     },
     setNewSession(state, action: PayloadAction<UserSession>) {
       if (state.auth.payload?.session) {
@@ -73,11 +55,14 @@ const AuthSlice = createSlice({
         state.auth.error = false;
       })
       .addCase(handleLogin.fulfilled, (state, action) => {
+        const token = action.payload.token;
+
         state.auth.loading = false;
         state.auth.payload = action.payload;
         state.session.payload = action.payload.session;
 
-        setApiHeader("Authorization", action.payload.token);
+        Cookies.set(cookieTokenKey, token);
+        setApiHeader(headerAuthorizationKey, token);
       })
       .addCase(handleLogin.rejected, (state) => {
         state.auth.loading = false;
@@ -98,12 +83,27 @@ const AuthSlice = createSlice({
       })
 
       .addCase(handleSession.pending, (state) => {
+        const token = Cookies.get(cookieTokenKey);
+
+        if (token) {
+          setApiHeader(headerAuthorizationKey, token);
+        }
+
         state.session.loading = true;
         state.session.error = false;
       })
       .addCase(handleSession.fulfilled, (state, action) => {
         state.session.loading = false;
         state.session.payload = action.payload.session;
+
+        const token = Cookies.get(cookieTokenKey);
+
+        if (token) {
+          state.auth.payload = {
+            session: action.payload.session,
+            token,
+          };
+        }
       })
       .addCase(handleSession.rejected, (state) => {
         state.session.loading = false;

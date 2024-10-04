@@ -1,4 +1,4 @@
-import { useToast } from "@/hooks/use-toast";
+import { useAlert } from "@/hooks/use-alert";
 import { Messages } from "@/messages";
 import { PropsWithChildren, createContext, useEffect, useState } from "react";
 import { NetworkContextValues } from "./types";
@@ -7,7 +7,7 @@ export const NetworkContext = createContext({} as NetworkContextValues);
 
 export function NetworkProvider({ children }: PropsWithChildren) {
   const [isOnline, setIsOnline] = useState(navigator.onLine);
-  const { toast } = useToast();
+  const { showToastError } = useAlert();
 
   function checkConnection() {
     setIsOnline(navigator.onLine);
@@ -15,11 +15,10 @@ export function NetworkProvider({ children }: PropsWithChildren) {
 
   useEffect(() => {
     if (!isOnline) {
-      toast({
-        title: Messages.NETWORK_DISCONNECT_TITLE,
-        description: Messages.NETWORK_DISCONNECT_DESCRIPTION,
-        variant: "destructive",
-      });
+      showToastError(
+        Messages.NETWORK_DISCONNECT_TITLE,
+        Messages.NETWORK_DISCONNECT_DESCRIPTION
+      );
     }
   }, [isOnline]);
 

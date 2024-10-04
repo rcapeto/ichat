@@ -12,7 +12,7 @@ function isAuth(route: string) {
 }
 
 export function ProtectedRoute({ appRoute }: ProtectedRouteProps) {
-  const { isError, isLoading, session } = useAccount();
+  const { isLoading, session } = useAccount();
   const { pathname } = useLocation();
 
   const isLogged = Boolean(session);
@@ -22,10 +22,6 @@ export function ProtectedRoute({ appRoute }: ProtectedRouteProps) {
 
   if (isLoading) {
     return <Loading />;
-  }
-
-  if (isError) {
-    return <p>Página de erro</p>;
   }
 
   if (appRoute.isPrivate && !isAuthenticated) {

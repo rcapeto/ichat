@@ -1,9 +1,13 @@
+import { applicationConfig } from "@/config/application";
 import { Messages } from "@/messages";
 import axios from "axios";
 import { ErrorType } from "./entities/error-type";
 
+const apiVersion = applicationConfig.api.version
+
 export const api = axios.create({
-  baseURL: "http://localhost:3333",
+  baseURL: `http://localhost:3333/${apiVersion}`,
+  validateStatus: () => true,
 });
 
 api.interceptors.request.use((request) => {

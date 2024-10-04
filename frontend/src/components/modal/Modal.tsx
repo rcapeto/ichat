@@ -47,7 +47,7 @@ function ModalComponent(props: ModalProps, ref: ForwardedRef<ModalActions>) {
   return (
     <AlertDialog open={open}>
       {withOverlay && <AlertDialogOverlay />}
-      <AlertDialogContent className="flex flex-col max-h-[700px]">
+      <AlertDialogContent className="flex flex-col max-h-[70vh]">
         <AlertDialogHeader className="flex flex-col gap-4">
           <div className="flex items-center justify-between gap-2">
             <AlertDialogTitle>{title}</AlertDialogTitle>

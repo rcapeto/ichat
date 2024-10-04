@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ButtonProps } from "@/components/ui/button";
 import { FunctionComponent } from "react";
 
@@ -11,8 +12,7 @@ export type ModalProps = {
   onActionClick?: () => void;
   cancelButtonText?: string;
   actionButtonText?: string;
-  Component?: FunctionComponent;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  Component?: FunctionComponent<any>;
   passProps?: Record<string, any>;
 };
 

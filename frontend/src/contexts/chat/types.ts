@@ -8,10 +8,11 @@ import {
 
 export type ChatContextValues = ChatStoreState & {
   addNewChat: (params: InsertNewChat) => void;
-  addNewMessage: (params: InsertNewMessage) => void;
+  addNewMessages: (params: InsertNewMessage) => void;
   selectChat: (params: SelectChat) => void;
   updateUnreadMessages: (params: UpdateReadMessages) => void;
   disconnectChat: () => void;
   userId: string;
-  showUsersModal: () => void;
+  toggleShowAddUserPage: () => void,
+  isVisibleAddUserPage: boolean,
 };

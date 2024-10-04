@@ -4,21 +4,25 @@ import { Toaster } from "@/components/ui/toaster";
 import { ModalProvider } from "@/contexts/modal";
 import { NetworkProvider } from "@/contexts/network";
 import { Routes } from "@/routes";
-import store from "@/store";
-import { Provider } from "react-redux";
+import { useEffect } from "react";
+import { useAccount } from "./hooks/use-account";
 
 const providers = [ModalProvider, NetworkProvider];
 
 export function App() {
+  const { getMySession } = useAccount();
+
+  useEffect(() => {
+    getMySession();
+  }, []);
+
   return (
-    <Provider store={store}>
-      <ComposeProviders providers={providers}>
-        <div className="bg-primary-foreground dark:bg-background w-screen h-screen">
-          <Routes />
-        </div>
-        <Toaster />
-        <Sonner />
-      </ComposeProviders>
-    </Provider>
+    <ComposeProviders providers={providers}>
+      <div className="bg-primary-foreground dark:bg-background w-screen h-screen">
+        <Routes />
+      </div>
+      <Toaster />
+      <Sonner />
+    </ComposeProviders>
   );
 }

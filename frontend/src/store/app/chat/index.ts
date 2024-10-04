@@ -1,5 +1,3 @@
-import { contactUser, fakeUser } from "@/store/auth";
-import { joinWords } from "@/utils/join-words";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { getTotalUnreadMessages } from "./get-total-unread-messages";
 import { orderChats } from "./order-chats";
@@ -16,6 +14,7 @@ import {
   InsertNewChat,
   InsertNewMessage,
   SelectChat,
+  SetLoggedUserId,
   UpdateOnlineUsers,
   UpdateReadMessages,
 } from "./types";
@@ -44,84 +43,23 @@ const initialState: ChatStoreState = {
   requestUsers: {
     error: false,
     loading: false,
-    payload: null,
+    payload: {
+      count: 2,
+      page: 1,
+      totalPages: 1,
+      users: [],
+    },
   },
   requestReadMessage: {
     error: false,
     loading: false,
     payload: null,
   },
-  chats: [
-    {
-      avatar: "",
-      id: "chat-id-1",
-      messages: [
-        {
-          chatId: "chat-id-1",
-          content: "olá raphael",
-          createdAt: new Date().toISOString(),
-          fileUrl: "",
-          owner: contactUser.session,
-          id: "message-1-id",
-          ownerId: contactUser.session.id,
-          read: true,
-        },
-        {
-          chatId: "chat-id-1",
-          content: "olá john",
-          createdAt: new Date().toISOString(),
-          fileUrl: "",
-          owner: fakeUser.session,
-          id: "message-2-id",
-          ownerId: fakeUser.session.id,
-          read: true,
-        },
-        {
-          chatId: "chat-id-1",
-          content: "como vc está?",
-          createdAt: new Date().toISOString(),
-          fileUrl: "",
-          owner: contactUser.session,
-          id: "message-3-id",
-          ownerId: contactUser.session.id,
-          read: false,
-        },
-        {
-          chatId: "chat-id-1",
-          fileUrl: "",
-          createdAt: new Date().toISOString(),
-          content:
-            "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus esse suscipit cum eaque perspiciatis dolor vel magni aperiam iusto repudiandae aspernatur natus pariatur cumque eum soluta aut, aliquam, amet incidunt!",
-          owner: contactUser.session,
-          id: "message-4-id",
-          ownerId: contactUser.session.id,
-          read: false,
-        },
-        {
-          chatId: "chat-id-1",
-          content: "Oceano",
-          createdAt: new Date().toISOString(),
-          fileUrl:
-            "https://images.unsplash.com/photo-1725161834059-9741b5400d0f?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-          owner: contactUser.session,
-          id: "message-5-id",
-          ownerId: contactUser.session.id,
-          read: false,
-        },
-      ],
-      name: joinWords(
-        contactUser.session.firstName,
-        contactUser.session.lastName
-      ),
-      notification: 2,
-      updatedAt: new Date().toISOString(),
-      chatUserId: contactUser.session.id,
-      createdAt: new Date().toISOString(),
-    },
-  ],
+  chats: [],
   totalUnreadMessages: 0,
   selectedChat: null,
-  onlineUsers: [contactUser.session.id],
+  onlineUsers: [],
+  loggedUserId: "",
 };
 
 const ChatSlice = createSlice({
@@ -133,6 +71,7 @@ const ChatSlice = createSlice({
 
       chats.push(action.payload.chat);
 
+      state.selectedChat = action.payload.chat
       state.chats = orderChats(chats);
       state.totalUnreadMessages = getTotalUnreadMessages(chats);
     },
@@ -142,10 +81,23 @@ const ChatSlice = createSlice({
       const chat = chats.find((chat) => chat.id === chatId);
 
       if (chat) {
+        for (const message of messages) {
+          const isMyMessage = message.ownerId === state.loggedUserId;
+          const isRead = message.read;
+
+          if (!isMyMessage && !isRead) {
+            chat.notification += 1;
+          }
+        }
+
         if (isOldMessage) {
           chat.messages.push(...messages);
         } else {
           chat.messages.unshift(...messages);
+        }
+
+        if(state.selectedChat?.id === chat.id) {
+          state.selectedChat = chat
         }
       }
 
@@ -182,6 +134,9 @@ const ChatSlice = createSlice({
     },
     updateOnlineUsers(state, action: PayloadAction<UpdateOnlineUsers>) {
       state.onlineUsers = action.payload.onlineUsers;
+    },
+    setLoggedUserId(state, action: PayloadAction<SetLoggedUserId>) {
+      state.loggedUserId = action.payload.id;
     },
   },
   extraReducers(builder) {
@@ -270,3 +225,6 @@ const ChatSlice = createSlice({
 
 export default ChatSlice.reducer;
 export const chatActions = ChatSlice.actions;
+
+//emery.homenick@yahoo.com
+// @Contato12345

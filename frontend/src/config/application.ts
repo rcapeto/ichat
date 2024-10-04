@@ -6,4 +6,10 @@ export const applicationConfig = {
   cookies: {
     userToken: "@token:user",
   },
+  api: {
+    headers: {
+      authorization: "Authorization",
+    },
+    version: 'v1'
+  },
 };

@@ -12,7 +12,7 @@ async function main() {
 
     await client.user.create({
       data: {
-        email: faker.internet.email(),
+        email: faker.internet.email().toLowerCase(),
         first_name: faker.person.firstName(),
         last_name: faker.person.lastName(),
         password: encryptedPassword,

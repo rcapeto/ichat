@@ -8,10 +8,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { UserAvatar } from "@/components/user-avatar";
+import { useAccount } from "@/hooks/use-account";
 import { useChat } from "@/hooks/use-chat";
-import { useAppDispatch } from "@/hooks/use-dispatch";
 import { ROUTES } from "@/routes";
-import { authActions } from "@/store/auth";
 import {
   ChatBubbleIcon,
   LockClosedIcon,
@@ -35,8 +34,8 @@ export function AccountDropdown(props: AccountDropdownProps) {
     profileImage = "",
   } = props;
 
+  const { logout } = useAccount();
   const { disconnectChat } = useChat();
-  const dispatch = useAppDispatch();
 
   const items = [
     { label: "Meu perfil", path: ROUTES.MY_PROFILE, icon: PersonIcon },
@@ -48,8 +47,8 @@ export function AccountDropdown(props: AccountDropdownProps) {
     { label: "Chat", path: ROUTES.HOME, icon: ChatBubbleIcon },
   ];
 
-  function logout() {
-    dispatch(authActions.logout());
+  function handleLogout() {
+    logout();
     disconnectChat();
   }
 
@@ -87,7 +86,7 @@ export function AccountDropdown(props: AccountDropdownProps) {
         </DropdownMenuGroup>
 
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={logout}>Sair</DropdownMenuItem>
+        <DropdownMenuItem onClick={handleLogout}>Sair</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

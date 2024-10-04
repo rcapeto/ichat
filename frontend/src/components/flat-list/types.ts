@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FunctionComponent, ReactNode } from "react";
 
 type RenderItemParams<Data> = {
@@ -12,13 +13,15 @@ export type FlatListProps<Data> = {
   data: Data[];
   renderItem: (params: RenderItemParams<Data>) => ReactNode;
   keyExtractor: (item: Data) => string;
-  HeaderComponent?: FunctionComponent<unknown>;
-  FooterComponent?: FunctionComponent<unknown>;
-  ListSeparatorComponent?: FunctionComponent<unknown>;
+  HeaderComponent?: ReactNode;
+  FooterComponent?: ReactNode;
+  ListSeparatorComponent?: FunctionComponent<any>;
   id?: string;
   reverse?: boolean;
   isLoading?: boolean;
-  LoadingComponent?: FunctionComponent<unknown>;
+  LoadingComponent?: FunctionComponent<any>;
   loadingQuantityItems?: number;
-  EmptyComponent?: FunctionComponent<unknown>;
+  EmptyComponent?: ReactNode;
+  withSpinner?: boolean,
+  teste?: ReactNode,
 };

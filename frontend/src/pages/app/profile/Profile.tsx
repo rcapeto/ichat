@@ -11,20 +11,15 @@ import { Input } from "@/components/ui/input";
 import { UserAvatar } from "@/components/user-avatar";
 import { useAccount } from "@/hooks/use-account";
 import { cn } from "@/lib/utils";
+import { Messages } from "@/messages";
 import { AppLayout } from "@/pages/app/components/Layout";
+import { isImageFile } from "@/utils/is-image-file";
 import { joinWords } from "@/utils/join-words";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { ChangeEvent, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { ProfileValues, validation } from "./validation";
-
-const ACCEPTED_IMAGE_TYPES = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "image/webp",
-];
 
 export function ProfilePage() {
   const { session } = useAccount();
@@ -86,13 +81,13 @@ export function ProfilePage() {
     if (files && files[0]) {
       const file = files[0];
 
-      if (ACCEPTED_IMAGE_TYPES.includes(file.type)) {
+      if (isImageFile(file.type)) {
         setValue("imagePreview", URL.createObjectURL(file));
         setValue("imageFile", file);
         clearErrors("imageFile");
       } else {
         setError("imageFile", {
-          message: "O formato do arquivo escolhido não é suportado",
+          message: Messages.INVALID_FILE_TYPE,
           type: "validate",
         });
       }

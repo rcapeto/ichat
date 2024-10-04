@@ -12,3 +12,53 @@
 [2024-09-29T18:48:18.190Z] - {{ ERROR }} - Method not implemented.
 [2024-09-29T18:48:53.244Z] - {{ ERROR }} - Method not implemented.
 [2024-09-29T18:55:56.620Z] - {{ ERROR }} - Cannot read properties of undefined (reading 'messages')
+[2024-10-03T18:35:12.836Z] - {{ ERROR }} - 
+Invalid `prisma.chat.create()` invocation:
+
+
+Foreign key constraint failed on the field: `foreign key`
+[2024-10-03T18:35:13.723Z] - {{ ERROR }} - 
+Invalid `prisma.chat.create()` invocation:
+
+
+Foreign key constraint failed on the field: `foreign key`
+[2024-10-03T18:35:14.521Z] - {{ ERROR }} - 
+Invalid `prisma.chat.create()` invocation:
+
+
+Foreign key constraint failed on the field: `foreign key`
+[2024-10-03T18:35:14.976Z] - {{ ERROR }} - 
+Invalid `prisma.chat.create()` invocation:
+
+
+Foreign key constraint failed on the field: `foreign key`
+[2024-10-03T18:35:15.218Z] - {{ ERROR }} - 
+Invalid `prisma.chat.create()` invocation:
+
+
+Foreign key constraint failed on the field: `foreign key`
+[2024-10-03T18:35:15.458Z] - {{ ERROR }} - 
+Invalid `prisma.chat.create()` invocation:
+
+
+Foreign key constraint failed on the field: `foreign key`
+[2024-10-03T18:35:16.373Z] - {{ ERROR }} - 
+Invalid `prisma.chat.create()` invocation:
+
+
+Foreign key constraint failed on the field: `foreign key`
+[2024-10-03T18:35:16.928Z] - {{ ERROR }} - 
+Invalid `prisma.chat.create()` invocation:
+
+
+Foreign key constraint failed on the field: `foreign key`
+[2024-10-03T18:35:17.544Z] - {{ ERROR }} - 
+Invalid `prisma.chat.create()` invocation:
+
+
+Foreign key constraint failed on the field: `foreign key`
+[2024-10-03T18:35:18.058Z] - {{ ERROR }} - 
+Invalid `prisma.chat.create()` invocation:
+
+
+Foreign key constraint failed on the field: `foreign key`

@@ -21,6 +21,7 @@ export type ChatStoreState = {
   totalUnreadMessages: number;
   selectedChat: SimpleChat | null;
   onlineUsers: string[];
+  loggedUserId: string;
 };
 
 export type InsertNewMessage = {
@@ -45,4 +46,8 @@ export type SelectChat = {
 
 export type UpdateOnlineUsers = {
   onlineUsers: string[];
+};
+
+export type SetLoggedUserId = {
+  id: string;
 };

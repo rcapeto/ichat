@@ -22,7 +22,9 @@ export const handleLogin = createAsyncThunk<LoginResponse, LoginRequest>(
       return response;
     } catch (error) {
       if (error instanceof AxiosError) {
-        throw error.response?.data?.message ?? "";
+        const response = error.response?.data
+
+        throw response.data?.message
       }
 
       if (error instanceof Error) {

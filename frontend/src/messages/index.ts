@@ -15,4 +15,16 @@ export const Messages = {
   PASSWORD_BASIC_REQUIREMENTS: (field: string) =>
     `O campo ${field} deve conter os requisitos mínimos para senha`,
   PASSWORD_MISS_MATCH: "Senhas não são iguais",
+  INVALID_FILE_TYPE: "O formato do arquivo escolhido não é suportado",
+  INVALID_FORMAT: "Formato inválido",
+  EMAIL_OR_PASSWORD_IS_INVALID:
+    "Email ou senha inválidos, por favor tente novamente!",
+  ERROR_TITLE: "Oh! Ops...",
+  DEFAULT_ERROR_MESSAGE: "Algo de errado aconteceu, tente novamente!",
+  WELCOME: "Seja bem-vindo!",
+  CREATE_CHAT_ERROR:
+    "Houve um problema para criar um chat com esse usuário, por favor tente novamente",
+  CREATE_MESSAGE:
+    "Ocorreu um problema ao enviar mensagem, por favor tente novamente",
+  NEW_MESSAGE: (fullName: string) => `${fullName} lhe enviou uma nova mensagem`,
 };

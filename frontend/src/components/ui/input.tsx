@@ -66,12 +66,7 @@ const InputSearch = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, ...props }, ref) => {
     return (
       <div className="w-full relative">
-        <Input
-          {...props}
-          type="search"
-          className={cn(className, "pl-10")}
-          ref={ref}
-        />
+        <Input {...props} className={cn(className, "pl-10")} ref={ref} />
 
         <Button
           size="icon"

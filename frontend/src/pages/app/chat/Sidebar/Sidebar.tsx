@@ -2,14 +2,14 @@ import { FlatList } from "@/components/flat-list";
 import { Button } from "@/components/ui/button";
 import { InputSearch } from "@/components/ui/input";
 import { useChat } from "@/hooks/use-chat";
-import { ChatRow } from "@/pages/app/chat/components/ChatRow";
+import { ChatRow } from "@/pages/app/chat/components/chat-row";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
-import { ChatRowLoading } from "../components/ChatRow/ChatRowLoading";
-
+import { ChatRowLoading } from "../components/chat-row/ChatRowLoading";
+import { EmptyState } from "./EmptyState";
 export function ChatSidebar() {
   const [search, setSearch] = useState("");
-  const { chats, requestChats, showUsersModal } = useChat();
+  const { chats, requestChats, toggleShowAddUserPage } = useChat();
 
   const filteredChats = chats.filter((chat) => {
     const chatNameLowercase = chat.name.toLowerCase();
@@ -29,12 +29,13 @@ export function ChatSidebar() {
       isLoading={isLoading}
       LoadingComponent={() => <ChatRowLoading />}
       loadingQuantityItems={5}
-      HeaderComponent={() => (
+      EmptyComponent={<EmptyState />}
+      HeaderComponent={
         <div className="flex flex-col gap-2 p-2">
           <div className="flex items-center justify-between">
             <h4 className="text-md font-semibold">Conversas</h4>
 
-            <Button size="icon" variant="ghost" onClick={showUsersModal}>
+            <Button size="icon" variant="ghost" onClick={toggleShowAddUserPage}>
               <PlusIcon />
             </Button>
           </div>
@@ -45,7 +46,7 @@ export function ChatSidebar() {
             onChange={(event) => setSearch(event.target.value)}
           />
         </div>
-      )}
+      }
     />
   );
 }

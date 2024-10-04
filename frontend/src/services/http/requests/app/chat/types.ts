@@ -5,7 +5,7 @@ export type Message = {
   createdAt: string;
   content: string;
   fileUrl: string | null;
-  chatId: string | null;
+  chatId: string;
   read: boolean;
   owner: UserSession;
   ownerId: string;
@@ -33,8 +33,8 @@ export type SimpleChat = {
   notification: number;
   messages: Message[];
   updatedAt: string;
-  chatUserId: string
-  createdAt: string,
+  chatUserId: string;
+  createdAt: string;
 };
 
 /** Obter usuários para o chat */
@@ -88,8 +88,8 @@ export type GetMessagesChatResponse = {
 export type CreateMessageRequest = {
   chatId: string;
   content: string;
-  file: string;
-};
+  file?: string;
+} | FormData;
 
 export type CreateMessageResponse = {
   contactId: string;

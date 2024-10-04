@@ -1,3 +1,4 @@
 export { SocketEvents } from './events-types'
-export { SocketInstance } from './socket-instance'
+export { io, server } from './io'
+export { socketInstance } from './socket-instance'
 export * from './types'

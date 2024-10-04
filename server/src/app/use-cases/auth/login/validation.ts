@@ -3,5 +3,5 @@ import { getEmailSchema, getStringWithLengthSchema } from '~/validation/default'
 
 export const validation = z.object({
   email: getEmailSchema('email'),
-  password: getStringWithLengthSchema('password', 8),
+  password: getStringWithLengthSchema('senha', 8),
 })

@@ -8,11 +8,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input, InputPassword } from "@/components/ui/input";
+import { useAccount } from "@/hooks/use-account";
 import { LoginFormValues, loginValidation } from "@/pages/auth/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 export function Login() {
+  const { login } = useAccount();
+
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginValidation),
   });
@@ -20,7 +23,10 @@ export function Login() {
   const { handleSubmit, control } = form;
 
   async function onSubmit(values: LoginFormValues) {
-    console.log("@@ values", values);
+    await login({
+      email: values.email,
+      password: values.password,
+    });
   }
 
   return (

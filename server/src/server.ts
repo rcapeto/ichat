@@ -2,7 +2,6 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import express from 'express'
 import path from 'node:path'
-import { Server as SocketServer } from 'socket.io'
 
 import { serverConfig } from '~/config/server'
 import { routes } from '~/routes'
@@ -10,14 +9,13 @@ import {
   SocketEvents,
   UserDisconnectSocketEventParams,
   UserOnlineSocketEventParams,
+  io,
+  server,
+  socketInstance,
 } from '~/services/socket'
-import { socketInstance } from '~/services/socket/socket-instance'
-
-const SERVER_PORT = serverConfig.PORT
 
 dotenv.config()
 
-const server = express()
 const uploadsPaths = Object.values(serverConfig.uploadFolders)
 
 server.use(
@@ -26,6 +24,32 @@ server.use(
   }),
 )
 server.use(express.json())
+
+io.on(SocketEvents.CONNECTION, (socket) => {
+  socket.on(SocketEvents.USER_ONLINE, (data: UserOnlineSocketEventParams) => {
+    socketInstance.setOnlineUser({
+      socketId: socket.id,
+      userId: data.userId,
+    })
+
+    socket.join(data.userId)
+
+    io.emit(SocketEvents.UPDATE_ONLINE_USERS, {
+      onlineUsers: socketInstance.getUsers(),
+    })
+  })
+
+  socket.on(
+    SocketEvents.USER_DISCONNECT,
+    (data: UserDisconnectSocketEventParams) => {
+      socketInstance.removeOnlineUserById(data.userId)
+
+      io.emit(SocketEvents.UPDATE_ONLINE_USERS, {
+        onlineUsers: socketInstance.getUsers(),
+      })
+    },
+  )
+})
 
 for (const uploadPath of uploadsPaths) {
   const staticPath = express.static(path.join(__dirname, '..', uploadPath))
@@ -39,45 +63,3 @@ for (const route of routes) {
 
   server.use(`/${apiVersion}`, route)
 }
-
-const origin = `http://localhost:${SERVER_PORT}`
-
-const httpServer = server.listen(SERVER_PORT, () => {
-  console.log(`
-   ================================================
-   Server is running in: ${origin}
-   ================================================
-`)
-})
-
-const io = new SocketServer(httpServer, {
-  cors: {
-    origin: 'http://localhost:3001',
-  },
-})
-
-io.on(SocketEvents.CONNECTION, (socket) => {
-  socketInstance.setSocket(socket)
-
-  socket.on(SocketEvents.USER_ONLINE, (data: UserOnlineSocketEventParams) => {
-    socketInstance.setOnlineUser({
-      socketId: socket.id,
-      userId: data.userId,
-    })
-
-    socket.broadcast.emit(SocketEvents.UPDATE_ONLINE_USERS, {
-      onlineUsers: socketInstance.getUsers(),
-    })
-  })
-
-  socket.on(
-    SocketEvents.USER_DISCONNECT,
-    (data: UserDisconnectSocketEventParams) => {
-      socketInstance.removeOnlineUserById(data.userId)
-
-      socket.broadcast.emit(SocketEvents.UPDATE_ONLINE_USERS, {
-        onlineUsers: socketInstance.getUsers(),
-      })
-    },
-  )
-})

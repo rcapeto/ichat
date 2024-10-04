@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { PropsWithChildren } from "react";
-import { Header } from "./Header";
+import { Header } from "./header";
 
 type LayoutProps = {
   className?: string;
