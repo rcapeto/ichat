@@ -50,12 +50,7 @@ export function Keyboard() {
         passProps: {
           file,
           onClose: closeModal,
-        },
-        actionButtonText: "Enviar",
-        cancelButtonText: "Cancelar",
-        onCancel: closeModal,
-        onActionClick: () => {
-          console.log("@@ enviar mensagem com file >>", { file });
+          chatId: selectedChat?.id,
         },
         title: "Imagem selecionada",
       });
@@ -79,6 +74,7 @@ export function Keyboard() {
 
   function onTakePicture(image: string) {
     //transformar em file através do fetch
+    console.log("@image", image);
   }
 
   const actions = [

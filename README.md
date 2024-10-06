@@ -11,3 +11,7 @@ Crie um arquivo na raiz chamado `tmp.txt` para os logs de erro da aplicação.
 
 ### To do:
 - Criar rota para obter sessão pelo token.
+
+### Login do usuário de testes
+- `Email`: emery.homenick@yahoo.com
+- `Password`: @Contato12345

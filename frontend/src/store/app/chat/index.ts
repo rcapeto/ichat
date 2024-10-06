@@ -239,6 +239,3 @@ const ChatSlice = createSlice({
 
 export default ChatSlice.reducer;
 export const chatActions = ChatSlice.actions;
-
-//emery.homenick@yahoo.com
-// @Contato12345

@@ -56,7 +56,7 @@ export function Message(props: MessageProps) {
             <img
               src={message.fileUrl}
               alt={message.content}
-              className="size-52 object-cover cursor-pointer rounded-sm"
+              className="size-52 w-full object-cover cursor-pointer rounded-sm"
               onClick={openImage}
             />
           )}

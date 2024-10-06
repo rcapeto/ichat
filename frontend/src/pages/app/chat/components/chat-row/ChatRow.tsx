@@ -8,7 +8,7 @@ import { useUpdateTimer } from "./use-update-timer";
 export function ChatRow(props: ChatRowProps) {
   const { chat } = props;
 
-  const { selectChat } = useChat();
+  const { selectChat, hideAddUserPage } = useChat();
   const lastMessage = chat.messages?.[0];
   const [firstName, lastName] = chat.name.split(" ");
 
@@ -19,6 +19,7 @@ export function ChatRow(props: ChatRowProps) {
 
   function handleSelectChat() {
     selectChat({ chat });
+    hideAddUserPage();
   }
 
   return (
