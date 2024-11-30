@@ -1,5 +1,11 @@
 # iChat
 
+## 3.0.1
+
+### Patch Changes
+
+- 93966a5: Alterando forma de atualização de branch
+
 ## 3.0.0
 
 ### Major Changes
