@@ -21,7 +21,9 @@ export function useAccount() {
       const isSuccess = !handleLogin.rejected.match(response);
 
       if (!isSuccess) {
-        throw new Error(response.error.message || Messages.EMAIL_OR_PASSWORD_IS_INVALID);
+        throw new Error(
+          response.error.message || Messages.EMAIL_OR_PASSWORD_IS_INVALID
+        );
       }
 
       const { session } = response.payload;
@@ -45,7 +47,12 @@ export function useAccount() {
     const token = Cookies.get(cookieTokenKey);
 
     if (token) {
-      await dispatch(handleSession({ token }));
+      const response = await dispatch(handleSession({ token }));
+      const isSuccess = !handleSession.rejected.match(response);
+
+      if (!isSuccess) {
+        logout();
+      }
     }
   }
 
