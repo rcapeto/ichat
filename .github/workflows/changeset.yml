@@ -3,7 +3,7 @@ name: Version or Publish
 on:
   push:
     branches:
-      - main
+      - update-main
       
 jobs:
   changeset:
@@ -43,4 +43,4 @@ jobs:
           body: This pr is generate automatically
           base: main
           labels: automated-pr
-          branch: develop
+          branch: update-main
