@@ -1,48 +1,23 @@
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { useAlert } from "@/hooks/use-alert";
-import { useAppDispatch } from "@/hooks/use-dispatch";
-import { Messages } from "@/messages";
-import { handleCreateMessage } from "@/store/app/chat/requests";
+import { useSendChatMessage } from "@/hooks/use-send-chat-message";
 import { useState } from "react";
 import { PhotoPreviewProps } from "./types";
 
 export function PhotoPreview(props: PhotoPreviewProps) {
   const { file, onClose, chatId } = props;
   const [message, setMessage] = useState("");
-  const dispatch = useAppDispatch();
-  const { showSonnerError } = useAlert();
+  const { onSendImageMessage } = useSendChatMessage();
 
   const fileURL = URL.createObjectURL(file);
 
-  async function onSendImage() {
-    if (!chatId) {
-      return;
-    }
-
-    try {
-      const formData = new FormData();
-
-      formData.set("chatId", chatId);
-      formData.set("content", message);
-      formData.set("messageAsset", file);
-
-      const response = await dispatch(handleCreateMessage(formData));
-      const isSuccess = !handleCreateMessage.rejected.match(response);
-
-      if (!isSuccess) {
-        throw new Error(
-          response.error.message || Messages.DEFAULT_ERROR_MESSAGE
-        );
-      }
-
-      onClose?.();
-    } catch (err) {
-      const errorMessage =
-        (err as Error)?.message || Messages.DEFAULT_ERROR_MESSAGE;
-
-      showSonnerError(errorMessage);
-    }
+  async function handleSend() {
+    await onSendImageMessage({
+      chatId,
+      file,
+      message,
+      successCallback: onClose,
+    });
   }
 
   return (
@@ -62,7 +37,7 @@ export function PhotoPreview(props: PhotoPreviewProps) {
         <Button onClick={onClose} variant="secondary">
           Cancelar
         </Button>
-        <Button onClick={onSendImage}>Enviar</Button>
+        <Button onClick={handleSend}>Enviar</Button>
       </div>
     </div>
   );
