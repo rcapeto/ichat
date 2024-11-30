@@ -162,6 +162,10 @@ export function ChatProvider(props: PropsWithChildren) {
     return await Notification.requestPermission();
   }
 
+  function changeShowChatCameraPreview(newValue: boolean) {
+    dispatch(chatActions.changeShowChatCameraPreview(newValue));
+  }
+
   useEffect(() => {
     if (session?.id) {
       requestNotificationAuthorization();
@@ -182,6 +186,7 @@ export function ChatProvider(props: PropsWithChildren) {
         isVisibleAddUserPage,
         showAddUserPage,
         hideAddUserPage,
+        changeShowChatCameraPreview,
         ...chat,
       }}
     >

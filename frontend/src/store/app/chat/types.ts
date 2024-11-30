@@ -22,6 +22,7 @@ export type ChatStoreState = {
   selectedChat: SimpleChat | null;
   onlineUsers: string[];
   loggedUserId: string;
+  showChatCameraPreview: boolean;
 };
 
 export type InsertNewMessage = {

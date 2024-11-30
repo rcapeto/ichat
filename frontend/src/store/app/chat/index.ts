@@ -60,12 +60,16 @@ const initialState: ChatStoreState = {
   selectedChat: null,
   onlineUsers: [],
   loggedUserId: "",
+  showChatCameraPreview: false,
 };
 
 const ChatSlice = createSlice({
   initialState,
   name: "chat-store",
   reducers: {
+    changeShowChatCameraPreview(state, action: PayloadAction<boolean>) {
+      state.showChatCameraPreview = action.payload;
+    },
     insertNewChat(state, action: PayloadAction<InsertNewChat>) {
       const chats = [...state.chats];
 

@@ -16,4 +16,5 @@ export type ChatContextValues = ChatStoreState & {
   showAddUserPage: () => void;
   hideAddUserPage: () => void;
   isVisibleAddUserPage: boolean;
+  changeShowChatCameraPreview: (newValue: boolean) => void;
 };
