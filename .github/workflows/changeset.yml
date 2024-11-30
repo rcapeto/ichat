@@ -41,6 +41,6 @@ jobs:
           commit-message: create pr
           title: Update your branch
           body: This pr is generate automatically
-          base: master
+          base: main
           labels: automated-pr
           branch: develop
