@@ -32,7 +32,7 @@ export const handleCreateChat = createAsyncThunk<
     return response;
   } catch (error) {
     if (error instanceof AxiosError) {
-      throw error.response?.data?.message ?? "";
+      throw error.response?.data?.message || error?.message;
     }
 
     if (error instanceof Error) {
@@ -52,7 +52,7 @@ export const handleCreateMessage = createAsyncThunk<
     return response;
   } catch (error) {
     if (error instanceof AxiosError) {
-      throw error.response?.data?.message ?? "";
+      throw error.response?.data?.message || error?.message;
     }
 
     if (error instanceof Error) {
@@ -72,7 +72,7 @@ export const handleGetMessagesChat = createAsyncThunk<
     return response;
   } catch (error) {
     if (error instanceof AxiosError) {
-      throw error.response?.data?.message ?? "";
+      throw error.response?.data?.message || error?.message;
     }
 
     if (error instanceof Error) {
@@ -112,7 +112,7 @@ export const handleGetUsersChat = createAsyncThunk<
     return response;
   } catch (error) {
     if (error instanceof AxiosError) {
-      throw error.response?.data?.message ?? "";
+      throw error.response?.data?.message || error?.message;
     }
 
     if (error instanceof Error) {
@@ -132,7 +132,7 @@ export const handleReadChatMessages = createAsyncThunk<
     return response;
   } catch (error) {
     if (error instanceof AxiosError) {
-      throw error.response?.data?.message ?? "";
+      throw error.response?.data?.message || error?.message;
     }
 
     if (error instanceof Error) {

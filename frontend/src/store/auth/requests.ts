@@ -22,9 +22,7 @@ export const handleLogin = createAsyncThunk<LoginResponse, LoginRequest>(
       return response;
     } catch (error) {
       if (error instanceof AxiosError) {
-        const response = error.response?.data
-
-        throw response.data?.message
+        throw error.response?.data?.message || error?.message;
       }
 
       if (error instanceof Error) {
@@ -45,7 +43,7 @@ export const handleRegister = createAsyncThunk<
     return response;
   } catch (error) {
     if (error instanceof AxiosError) {
-      throw error.response?.data?.message ?? "";
+      throw error.response?.data?.message || error?.message;
     }
 
     if (error instanceof Error) {

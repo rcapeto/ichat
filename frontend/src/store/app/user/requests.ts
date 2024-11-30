@@ -21,7 +21,7 @@ export const handleUpdateUser = createAsyncThunk<
     return response;
   } catch (error) {
     if (error instanceof AxiosError) {
-      throw error.response?.data?.message ?? "";
+      throw error.response?.data?.message || error?.message;
     }
 
     if (error instanceof Error) {
@@ -41,7 +41,7 @@ export const handleUpdateUserPassword = createAsyncThunk<
     return response;
   } catch (error) {
     if (error instanceof AxiosError) {
-      throw error.response?.data?.message ?? "";
+      throw error.response?.data?.message || error?.message;
     }
 
     if (error instanceof Error) {
