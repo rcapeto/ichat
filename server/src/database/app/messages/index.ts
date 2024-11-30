@@ -46,7 +46,7 @@ export class DatabaseMessageRepository implements MessageRepository {
       contactUnreadCount,
       ownerUnreadCount,
       message: new MessageEntity(message).getMessageFormat(),
-      contactId: chat.contact_id,
+      contactId: userIsOwner ? chat.contact_id : chat.owner_id,
     }
   }
 

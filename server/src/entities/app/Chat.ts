@@ -22,6 +22,8 @@ export type SimpleChat = {
   notification: number
   messages: Message[]
   updatedAt: string
+  chatUserId: string
+  createdAt: string
 }
 
 export class ChatEntity {
@@ -55,10 +57,12 @@ export class ChatEntity {
         new MessageEntity(message).getMessageFormat(),
       ),
       name: `${chatInfo.first_name} ${chatInfo.last_name}`,
+      chatUserId: chatInfo.id,
       notification: isMe
         ? this.chat.owner_unread_count
         : this.chat.contact_unread_count,
       updatedAt: this.chat.updated_at.toISOString(),
+      createdAt: this.chat.created_at.toISOString(),
     }
   }
 }

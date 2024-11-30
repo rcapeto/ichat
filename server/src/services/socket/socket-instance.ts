@@ -29,7 +29,7 @@ export class SocketInstance {
   }
 
   getUsers(): string[] {
-    return Array.from(this.onlineUsers.values())
+    return Array.from(this.onlineUsers.keys())
   }
 
   getSocketIdByUserId(userId: string): string {

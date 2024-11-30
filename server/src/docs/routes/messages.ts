@@ -14,6 +14,7 @@ import { Status } from '~/enums/status'
 import { Messages } from '~/messages'
 import { endpoints } from '~/routes/endpoints'
 import { dispatchError } from '~/utils/dispatchError'
+import { createApiSchema } from '../utils/createApiSchema'
 
 const messagesEndpoints = endpoints.app.message
 
@@ -96,7 +97,7 @@ const schemas: DocumentSchema = {
       file: { type: 'string' },
     },
   },
-  CreateMessageResponse: {
+  CreateMessageResponse: createApiSchema({
     type: 'object',
     properties: {
       contactUnreadCount: { type: 'number' },
@@ -126,7 +127,7 @@ const schemas: DocumentSchema = {
         },
       },
     },
-  },
+  }),
 }
 
 export default { paths, schemas }

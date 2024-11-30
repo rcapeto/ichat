@@ -2,6 +2,7 @@ import { createApiSchema } from '~/docs/utils/createApiSchema'
 import { createRoute } from '~/docs/utils/createRoute'
 
 import {
+  GetMySessionResponse,
   LoginRequest,
   RegisterRequest,
   RegisterResponse,
@@ -25,6 +26,7 @@ const authEndpoints = endpoints.authentication
 
 const loginRoute = createRoute<LoginRequest, LoginResponse>
 const registerRoute = createRoute<RegisterRequest, RegisterResponse>
+const sessionRoute = createRoute<void, GetMySessionResponse>
 
 const tag = 'Authorization'
 
@@ -109,6 +111,32 @@ const paths = {
       },
     ],
   }),
+  [getCorrectEndpoint(authEndpoints.session)]: sessionRoute({
+    routes: [
+      {
+        method: 'get',
+        description: 'Obter sessão do usuário pelo token',
+        summary: 'Obter sessão',
+        tags: [tag],
+        responses: [
+          createResponseError(
+            dispatchNotFoundError(Messages.DOES_NOT_FOUND_USER),
+            'Quando o usuário não é encontrado',
+          ),
+          createResponseValidationError(),
+          {
+            code: Status.OK,
+            content: {
+              ok: true,
+              data: {},
+            },
+            contentSchemaPath: 'SessionResponse',
+            description: 'Sessão feita com sucesso',
+          },
+        ],
+      },
+    ],
+  }),
 }
 
 const schemas: DocumentSchema = {
@@ -129,14 +157,31 @@ const schemas: DocumentSchema = {
       lastName: { type: 'string' },
     },
   },
-  RegisterResponse: {
+  RegisterResponse: createApiSchema({
     type: 'object',
     properties: {},
-  },
+  }),
   LoginResponse: createApiSchema({
     type: 'object',
     properties: {
       token: { type: 'string' },
+      session: {
+        type: 'object',
+        properties: {
+          firstName: { type: 'string' },
+          password: { type: 'string' },
+          lastName: { type: 'string' },
+          email: { type: 'string' },
+          profileImage: { type: 'string' },
+          createdAt: { type: 'string' },
+          id: { type: 'string' },
+        },
+      },
+    },
+  }),
+  SessionResponse: createApiSchema({
+    type: 'object',
+    properties: {
       session: {
         type: 'object',
         properties: {

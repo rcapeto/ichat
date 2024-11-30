@@ -10,6 +10,8 @@ import {
   dispatchUnauthorizedError,
 } from '~/utils/dispatchError'
 import {
+  GetMySessionRequest,
+  GetMySessionResponse,
   LoginRequest,
   LoginResponse,
   RegisterRequest,
@@ -19,6 +21,14 @@ import { makeUser } from './utils'
 
 export class TestAuthRepository implements AuthRepository {
   private users: PrismaUserEntity[] = []
+
+  async session(request: GetMySessionRequest): Promise<GetMySessionResponse> {
+    const { userId } = request
+    const user = await this.findUserById(userId)
+    const session = new UserEntity(user).getSession()
+
+    return { session }
+  }
 
   async register(request: RegisterRequest): Promise<RegisterResponse> {
     const { email, firstName, lastName, password } = request
@@ -56,6 +66,16 @@ export class TestAuthRepository implements AuthRepository {
 
   async findUserByEmail(email: string) {
     const user = this.users.find((item) => item.email === email)
+
+    if (!user) {
+      throw dispatchNotFoundError(Messages.DOES_NOT_FOUND_USER)
+    }
+
+    return user
+  }
+
+  async findUserById(id: string) {
+    const user = this.users.find((item) => item.id === id)
 
     if (!user) {
       throw dispatchNotFoundError(Messages.DOES_NOT_FOUND_USER)
