@@ -1,5 +1,17 @@
 # iChat
 
+## 3.0.0
+
+### Major Changes
+
+- cadc8e7: Finalização do projeto
+
+### Minor Changes
+
+- d238dac: Upload de imagem no chat
+- cadc8e7: Alterando mensagens de erro, criando funcionalidade para envio de fotos e pdfs, criando funcionalidade para tirar foto
+- 1b47a33: Implementação do socket.io para criar chat, mensagem, ler mensagens
+
 ## 2.2.0
 
 ### Minor Changes
