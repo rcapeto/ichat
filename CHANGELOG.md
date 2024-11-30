@@ -1,5 +1,15 @@
 # iChat
 
+## 3.1.0
+
+### Minor Changes
+
+- 8ffa46b: alterando esteira
+
+### Patch Changes
+
+- d80a663: Alterando branch para criação do pull-request para main
+
 ## 3.0.1
 
 ### Patch Changes

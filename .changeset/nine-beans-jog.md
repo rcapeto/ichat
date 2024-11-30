@@ -1,5 +1,0 @@
----
-"iChat": minor
----
-
-alterando esteira
