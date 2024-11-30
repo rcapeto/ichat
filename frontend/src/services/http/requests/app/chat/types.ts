@@ -85,11 +85,13 @@ export type GetMessagesChatResponse = {
 };
 
 /** Criar uma mensagem */
-export type CreateMessageRequest = {
-  chatId: string;
-  content: string;
-  file?: string;
-} | FormData;
+export type CreateMessageRequest =
+  | {
+      chatId: string;
+      content: string;
+      file?: File;
+    }
+  | FormData;
 
 export type CreateMessageResponse = {
   contactId: string;
