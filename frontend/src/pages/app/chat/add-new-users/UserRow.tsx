@@ -4,11 +4,9 @@ import { UserAvatar } from "@/components/user-avatar";
 import { useAlert } from "@/hooks/use-alert";
 import { useChat } from "@/hooks/use-chat";
 import { useAppDispatch } from "@/hooks/use-dispatch";
+import { useSendChatMessage } from "@/hooks/use-send-chat-message";
 import { Messages } from "@/messages";
-import {
-  handleCreateChat,
-  handleCreateMessage,
-} from "@/store/app/chat/requests";
+import { handleCreateChat } from "@/store/app/chat/requests";
 import { joinWords } from "@/utils/join-words";
 import { PaperPlaneIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
@@ -19,6 +17,7 @@ export function UserRow(props: UserRowProps) {
   const dispatch = useAppDispatch();
   const { hideAddUserPage } = useChat();
   const { showToastError } = useAlert();
+  const { onSendMessage } = useSendChatMessage();
 
   const [message, setMessage] = useState("");
   const [active, setActive] = useState(false);
@@ -57,25 +56,11 @@ export function UserRow(props: UserRowProps) {
       return;
     }
 
-    try {
-      const response = await dispatch(
-        handleCreateMessage({ chatId: chat.id, content: message, file: "" })
-      );
-      const isSuccess = !handleCreateMessage.rejected.match(response);
-
-      if (!isSuccess) {
-        throw new Error(response.error.message);
-      }
-
-      hideAddUserPage();
-    } catch (err) {
-      const errorMessage =
-        (err as Error)?.message || Messages.DEFAULT_ERROR_MESSAGE;
-
-      showToastError(errorMessage);
-
-      return null;
-    }
+    await onSendMessage({
+      chatId: chat.id,
+      message,
+      successCallback: hideAddUserPage,
+    });
   }
 
   async function onClickSendMessage() {
